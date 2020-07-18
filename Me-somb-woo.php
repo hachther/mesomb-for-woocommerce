@@ -2,12 +2,11 @@
 
 /*
 Plugin Name: MeSomb for WooCommerce
-Plugin URI: http://URI_Of_Page_Describing_Plugin_and_Updates
-Description: Plugin to integrate MeSomb payment on WooCommerce
-Version: 1.0
+Plugin URI: https://mesomb.hachther.com
+Description: Plugin to integrate Mobile payment on WooCommerce using Hachther MeSomb
+Version: 1.0.0
 Author: Hachther LLC
-Author URI: http://URI_Of_The_Plugin_Author
-License: A "Slug" license name e.g. GPL2
+Author URI: https://hachther.com
 */
 
 /*
@@ -27,9 +26,6 @@ function mesomb_timeout_extend($time)
 }
 
 
-/*
- * The class itself, please note that it is inside plugins_loaded action hook
- */
 add_action('plugins_loaded', 'mesomb_init_gateway_class');
 function mesomb_init_gateway_class()
 {
@@ -38,14 +34,13 @@ function mesomb_init_gateway_class()
 
         public function __construct()
         {
-            $this->id = 'mesomb'; // payment gateway plugin ID
+            $this->id = 'mesomb';
             $this->icon = 'https://s3-us-west-2.amazonaws.com/public.hachther.com/mesomb/logo-shadow-white.png'; // URL of the icon that will be displayed on checkout page near your gateway name
-            $this->has_fields = true; // in case you need a custom credit card form
+            $this->has_fields = true;
             $this->method_title = 'MeSomb Gateway';
             $this->method_description = 'Allow user to make payment with Mobile Money or Orange Money'; // will be displayed on the options page
 
             // gateways can support subscriptions, refunds, saved payment methods,
-            // but in this tutorial we begin with simple payments
             $this->supports = array(
                 'products'
             );
@@ -113,20 +108,20 @@ function mesomb_init_gateway_class()
 
         public function payment_scripts()
         {
-//            // we need JavaScript to process a token only on cart/checkout pages, right?
-//            if (!is_cart() && !is_checkout() && !isset($_GET['pay_for_order'])) {
-//                return;
-//            }
-//
-//            // if our payment gateway is disabled, we do not have to enqueue JS too
-//            if ('no' === $this->enabled) {
-//                return;
-//            }
-//
-//            // no reason to enqueue JavaScript if API keys are not set
-//            if (empty($this->application)) {
-//                return;
-//            }
+            // we need JavaScript to process a token only on cart/checkout pages, right?
+            if (!is_cart() && !is_checkout() && !isset($_GET['pay_for_order'])) {
+                return;
+            }
+
+            // if our payment gateway is disabled, we do not have to enqueue JS too
+            if ('no' === $this->enabled) {
+                return;
+            }
+
+            // no reason to enqueue JavaScript if API keys are not set
+            if (empty($this->application)) {
+                return;
+            }
 
             wp_enqueue_style( 'woocommerce_mesomb', plugins_url('style.css', __FILE__) );
 
@@ -145,12 +140,6 @@ function mesomb_init_gateway_class()
         {
             // ok, let's display some description before the payment form
             if ($this->description) {
-                // you can instructions for test mode, I mean test card numbers etc.
-//                if ($this->testmode) {
-//                    $this->description .= ' TEST MODE ENABLED. In test mode, you can use the card numbers listed in <a href="#" target="_blank" rel="noopener noreferrer">documentation</a>.';
-//                    $this->description = trim($this->description);
-//                }
-                // display the description with <p> tags etc.
                 echo wpautop(wp_kses_post($this->description));
             }
 
