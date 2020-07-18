@@ -39,7 +39,7 @@ function mesomb_init_gateway_class()
         public function __construct()
         {
             $this->id = 'mesomb'; // payment gateway plugin ID
-            $this->icon = ''; // URL of the icon that will be displayed on checkout page near your gateway name
+            $this->icon = 'https://s3-us-west-2.amazonaws.com/public.hachther.com/mesomb/logo-shadow-white.png'; // URL of the icon that will be displayed on checkout page near your gateway name
             $this->has_fields = true; // in case you need a custom credit card form
             $this->method_title = 'MeSomb Gateway';
             $this->method_description = 'Allow user to make payment with Mobile Money or Orange Money'; // will be displayed on the options page
@@ -59,7 +59,7 @@ function mesomb_init_gateway_class()
             $this->description = $this->get_option('description');
             $this->enabled = $this->get_option('enabled');
             $this->testmode = 'yes' === $this->get_option('testmode');
-            $this->api_key = $this->testmode ? $this->get_option('test_api_key') : $this->get_option('api_key');
+            $this->application = $this->get_option('application');
             $this->account = $this->get_option('account');
             $this->fees_included = $this->get_option('fees_included');
 
@@ -71,7 +71,6 @@ function mesomb_init_gateway_class()
 
             // You can also register a webhook here
             // add_action( 'woocommerce_api_{webhook name}', array( $this, 'webhook' ) );
-
         }
 
         public function init_form_fields()
@@ -88,7 +87,7 @@ function mesomb_init_gateway_class()
                     'title' => 'Title',
                     'type' => 'text',
                     'description' => 'This controls the title which the user sees during checkout.',
-                    'default' => 'MeSomb Payment',
+                    'default' => 'MeSomb Mobile Payment',
                     'desc_tip' => true,
                 ),
                 'description' => array(
@@ -105,24 +104,8 @@ function mesomb_init_gateway_class()
                     'default' => 'yes',
                     'desc_tip' => true,
                 ),
-                'account' => array(
-                    'title' => 'MeSomb Account',
-                    'type' => 'text'
-                ),
-                'testmode' => array(
-                    'title' => 'Test mode',
-                    'label' => 'Enable Test Mode',
-                    'type' => 'checkbox',
-                    'description' => 'Place the payment gateway in test mode using test API keys.',
-                    'default' => 'yes',
-                    'desc_tip' => true,
-                ),
-                'test_api_key' => array(
-                    'title' => 'Test Api Key',
-                    'type' => 'password'
-                ),
-                'api_key' => array(
-                    'title' => 'Live API Key',
+                'application' => array(
+                    'title' => 'MeSomb Application Key',
                     'type' => 'password'
                 )
             );
@@ -130,35 +113,29 @@ function mesomb_init_gateway_class()
 
         public function payment_scripts()
         {
-            // we need JavaScript to process a token only on cart/checkout pages, right?
-            if (!is_cart() && !is_checkout() && !isset($_GET['pay_for_order'])) {
-                return;
-            }
+//            // we need JavaScript to process a token only on cart/checkout pages, right?
+//            if (!is_cart() && !is_checkout() && !isset($_GET['pay_for_order'])) {
+//                return;
+//            }
+//
+//            // if our payment gateway is disabled, we do not have to enqueue JS too
+//            if ('no' === $this->enabled) {
+//                return;
+//            }
+//
+//            // no reason to enqueue JavaScript if API keys are not set
+//            if (empty($this->application)) {
+//                return;
+//            }
 
-            // if our payment gateway is disabled, we do not have to enqueue JS too
-            if ('no' === $this->enabled) {
-                return;
-            }
-
-            // no reason to enqueue JavaScript if API keys are not set
-            if (empty($this->api_key)) {
-                return;
-            }
-
-            // do not work with card detailes without SSL unless your website is in a test mode
-            if (!$this->testmode && !is_ssl()) {
-                return;
-            }
-
-            // let's suppose it is our payment processor JavaScript that allows to obtain a token
-            wp_enqueue_script('mesomb_js', 'https://mesomb.hachther.com/api/token.js');
+            wp_enqueue_style( 'woocommerce_mesomb', plugins_url('style.css', __FILE__) );
 
             // and this is our custom JS in your plugin directory that works with token.js
             wp_register_script('woocommerce_mesomb', plugins_url('mesomb.js', __FILE__), array('jquery', 'mesomb_js'));
 
             // in most payment processors you have to use PUBLIC KEY to obtain a token
             wp_localize_script('woocommerce_mesomb', 'mesomb_params', array(
-                'apiKey' => $this->api_key
+                'apiKey' => $this->application
             ));
 
             wp_enqueue_script('woocommerce_mesomb');
@@ -169,32 +146,68 @@ function mesomb_init_gateway_class()
             // ok, let's display some description before the payment form
             if ($this->description) {
                 // you can instructions for test mode, I mean test card numbers etc.
-                if ($this->testmode) {
-                    $this->description .= ' TEST MODE ENABLED. In test mode, you can use the card numbers listed in <a href="#" target="_blank" rel="noopener noreferrer">documentation</a>.';
-                    $this->description = trim($this->description);
-                }
+//                if ($this->testmode) {
+//                    $this->description .= ' TEST MODE ENABLED. In test mode, you can use the card numbers listed in <a href="#" target="_blank" rel="noopener noreferrer">documentation</a>.';
+//                    $this->description = trim($this->description);
+//                }
                 // display the description with <p> tags etc.
                 echo wpautop(wp_kses_post($this->description));
             }
 
             // I will echo() the form, but you can close PHP tags and print it directly in HTML
-            echo '<fieldset id="wc-' . esc_attr($this->id) . '-cc-form" class="wc-credit-card-form wc-payment-form" style="background:transparent;">';
+            echo '<fieldset id="wc-' . esc_attr($this->id) . '-cc-form" class="wc-mesomb-form wc-payment-form" style="background:transparent;">';
 
             // Add this action hook if you want your custom payment gateway to support it
             do_action('woocommerce_credit_card_form_start', $this->id);
 
             // I recommend to use inique IDs, because other gateways could already use #ccNo, #expdate, #cvc
-            echo '<div class="form-row form-row-wide"><label>Phone Number <span class="required">*</span></label>
-                <input id="mesomb_number" type="tel" autocomplete="off" name="mesomb_number">
-                </div>
-                <div class="form-row form-row-wide">
-                    <label>Operator <span class="required">*</span></label>
-                    <select name="mesomb_service" id="mesomb_operator">
-                        <option value="MOBILE_MONEY">Mobile Money</option>
-                        <option value="ORANGE_MONEY">Orange Money</option>
-                    </select>
-                </div>
-                <div class="clear"></div>';
+            echo '<div class="form-row form-row-wide">
+                    <label>Phone Number <span class="required">*</span></label>
+                    <div class="woocommerce-input-wrapper">
+                        <input id="payer" type="tel" autocomplete="off" name="payer" placeholder="Expl: 670000000" class="input-text" />
+                    </div>
+                  </div>
+                  <div class="form-row form-row-first validate-required">
+                    <label class="kt-option">
+                        <span class="kt-option__label">
+                            <span class="kt-option__head">
+                            <span class="kt-option__control">
+                            <span class="kt-radio">
+                                <input name="service" value="MTN" type="radio" checked class="input-radio"/>
+                                <span></span>
+                            </span>
+                        </span>
+                                <span class="kt-option__title">Mobile Money</span>
+                                <span class="kt-option__focus">
+                                    <img src="https://s3-us-west-2.amazonaws.com/public.hachther.com/mesomb/logo-momo%40128.png" style="height: 25px;"/>
+                                </span>
+                            </span>
+                            <span class="kt-option__body">Pay with your Mobile Money</span>
+                        </span>
+                    </label>
+                  </div>
+                  <div class="form-row form-row-last validate-required">
+                  <label class="kt-option">
+                        <span class="kt-option__label">
+                            <span class="kt-option__head">
+                            <span class="kt-option__control">
+                            <span class="kt-radio">
+                                <input name="service" value="ORANGE" type="radio" class="input-radio"/>
+                                <span></span>
+                            </span>
+                        </span>
+                                <span class="kt-option__title">Orange Money</span>
+                                <span class="kt-option__focus">
+                                    <img src="https://s3-us-west-2.amazonaws.com/public.hachther.com/mesomb/logo-orange-money%40128.jpg" style="height: 25px;"/>
+                                </span>
+                            </span>
+                            <span class="kt-option__body">Pay with your Orange Money</span>
+                        </span>
+                    </label>
+                  </div>
+                  <img src="https://s3-us-west-2.amazonaws.com/public.hachther.com/mesomb/logo-long-fr.png" style="width: 300px; margin-top: 10px;" />
+                  <div class="clear" />
+                </div>';
 
             do_action('woocommerce_credit_card_form_end', $this->id);
 
@@ -203,7 +216,7 @@ function mesomb_init_gateway_class()
 
         public function validate_fields()
         {
-            if (empty($_POST['mesomb_number'])) {
+            if (empty($_POST['payer'])) {
                 wc_add_notice('<strong>Mobile/Orange Money Number</strong> is required', 'error');
                 return false;
             }
@@ -220,25 +233,25 @@ function mesomb_init_gateway_class()
             $order = wc_get_order($order_id);
 
             $data = array(
-                'account' => $this->account,
-                'amount' => floatval($order->get_total()),
-                'payer' => $_POST['mesomb_number'],
-                'service' => $_POST['mesomb_service'],
-                'fees_included' => $this->fees_included == 'yes' ? true : false,
-                'currency' => $order->get_order_currency(),
-                'note' => $order->get_customer_note(),
+                'amount' => intval($order->get_total()),
+                'payer' => '237'.substr($_POST['payer'], -9, 9),
+                'service' => $_POST['service'],
+                'fees' => $this->fees_included == 'yes' ? true : false,
+                'currency' => 'XAF', //$order->get_order_currency(),
+                'message' => $order->get_customer_note().' '.get_bloginfo('name'),
                 'external_id' => $order->get_id(),
-                'source' => get_bloginfo('name'),
+                'country' => 'CM',
             );
 
             /*
              * Your API interaction could be built with wp_remote_post()
              */
-            $response = wp_remote_post('http://mesomb.hachther.com/api/v1.0/transactions/collect/', array(
+            $response = wp_remote_post('https://mesomb.hachther.com/api/v1.0/payment/online/', array(
                 'body' => json_encode($data),
                 'headers' => array(
-                    'Authorization' => 'Token ' . $this->api_key,
-                    'Content-Type' => 'application/json'
+                    'X-MeSomb-Application' => $this->application,
+                    'Content-Type' => 'application/json',
+                    'Accept-Language' => get_locale()
                 )
             ));
 
@@ -246,7 +259,7 @@ function mesomb_init_gateway_class()
                 $body = json_decode($response['body'], true);
 
                 // it could be different depending on your payment processor
-                if ($body['status'] == 'SUCCESSFUL') {
+                if ($body['success'] == true) {
                     // we received the payment
                     $order->payment_complete();
                     $order->reduce_order_stock();
@@ -263,9 +276,12 @@ function mesomb_init_gateway_class()
                         'redirect' => $this->get_return_url($order)
                     );
                 } else {
-                    wc_add_notice("Error during the payment process\n Please try aging and contact admin if the issue is continue", 'error');
+                    wc_add_notice($body['detail'], 'error');
                     return;
                 }
+            } else {
+                wc_add_notice("Error during the payment process\n Please try aging and contact admin if the issue is continue", 'error');
+                return;
             }
         }
     }
