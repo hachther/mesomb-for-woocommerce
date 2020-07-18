@@ -35,7 +35,7 @@ function mesomb_init_gateway_class()
         public function __construct()
         {
             $this->id = 'mesomb';
-            $this->icon = 'https://s3-us-west-2.amazonaws.com/public.hachther.com/mesomb/logo-shadow-white.png'; // URL of the icon that will be displayed on checkout page near your gateway name
+            $this->icon = plugins_url('images/logo-long-fr.png', __FILE__); // URL of the icon that will be displayed on checkout page near your gateway name
             $this->has_fields = true;
             $this->method_title = 'MeSomb Gateway';
             $this->method_description = 'Allow user to make payment with Mobile Money or Orange Money'; // will be displayed on the options page
@@ -168,7 +168,7 @@ function mesomb_init_gateway_class()
                         </span>
                                 <span class="kt-option__title">Mobile Money</span>
                                 <span class="kt-option__focus">
-                                    <img src="https://s3-us-west-2.amazonaws.com/public.hachther.com/mesomb/logo-momo%40128.png" style="height: 25px;"/>
+                                    <img src="'.plugins_url('images/logo-momo.png', __FILE__).'" style="height: 25px;"/>
                                 </span>
                             </span>
                             <span class="kt-option__body">Pay with your Mobile Money</span>
@@ -187,14 +187,14 @@ function mesomb_init_gateway_class()
                         </span>
                                 <span class="kt-option__title">Orange Money</span>
                                 <span class="kt-option__focus">
-                                    <img src="https://s3-us-west-2.amazonaws.com/public.hachther.com/mesomb/logo-orange-money%40128.jpg" style="height: 25px;"/>
+                                    <img src="'.plugins_url('images/logo-orange.jpg', __FILE__).'" style="height: 25px;"/>
                                 </span>
                             </span>
                             <span class="kt-option__body">Pay with your Orange Money</span>
                         </span>
                     </label>
                   </div>
-                  <img src="https://s3-us-west-2.amazonaws.com/public.hachther.com/mesomb/logo-long-fr.png" style="width: 300px; margin-top: 10px;" />
+                  <img src="'.plugins_url('images/logo-long-fr.png', __FILE__).'" style="width: 300px; margin-top: 10px;" />
                   <div class="clear" />
                 </div>';
 
@@ -220,11 +220,23 @@ function mesomb_init_gateway_class()
 
             // we need it to get any order detailes
             $order = wc_get_order($order_id);
+            $service = $_POST['service'];
+            $payer = sanitize_text_field($_POST['payer']);
+
+            if (!in_array($service, ['ORANGE', 'MTN'])) {
+                wc_add_notice("Invalid operator it should be Mobile Money or Orange Money", 'error');
+                return;
+            }
+
+            if (!preg_match("/^6\d{8}$/", $payer)) {
+                wc_add_notice("Your phone is not in valid format. It should be in local format of MTN or Orange expl: 670000000", 'error');
+                return;
+            }
 
             $data = array(
                 'amount' => intval($order->get_total()),
-                'payer' => '237'.substr($_POST['payer'], -9, 9),
-                'service' => $_POST['service'],
+                'payer' => '237'.$payer,
+                'service' => $service,
                 'fees' => $this->fees_included == 'yes' ? true : false,
                 'currency' => 'XAF', //$order->get_order_currency(),
                 'message' => $order->get_customer_note().' '.get_bloginfo('name'),
