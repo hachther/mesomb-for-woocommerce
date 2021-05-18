@@ -180,7 +180,7 @@ function mesomb_init_gateway_class()
             wp_enqueue_style( 'woocommerce_mesomb', plugins_url('style.css', __FILE__) );
 
             // and this is our custom JS in your plugin directory that works with token.js
-            wp_register_script('woocommerce_mesomb', plugins_url('mesomb.js', __FILE__), array('jquery', 'mesomb_js'));
+            wp_register_script('woocommerce_mesomb', plugins_url('mesomb.js', __FILE__) );
 
             // in most payment processors you have to use PUBLIC KEY to obtain a token
             wp_localize_script('woocommerce_mesomb', 'mesomb_params', array(
@@ -209,7 +209,7 @@ function mesomb_init_gateway_class()
             echo '<div class="form-row form-row-wide">
                     <label>'.__('Phone Number', 'mesomb-for-woocommerce').' <span class="required">*</span></label>
                     <div class="woocommerce-input-wrapper">
-                        <input id="payer" type="tel" autocomplete="off" name="payer" placeholder="Expl: 670000000" class="input-text" />
+                        <input id="mesomb-payer" type="tel" autocomplete="off" name="payer" placeholder="Expl: 670000000" class="input-text" />
                     </div>
                   </div>
                   <div class="form-row form-row-first validate-required">

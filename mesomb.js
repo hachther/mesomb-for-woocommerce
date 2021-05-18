@@ -30,5 +30,7 @@ var tokenRequest = function() {
 jQuery(function($){
     // var checkout_form = $( 'form.woocommerce-checkout' );
     // checkout_form.on( 'checkout_place_order', tokenRequest );
-    alert('fihser bink')
+    $('input[name=billing_phone]').on('change', function (elm) {
+        $('#mesomb-payer').val(elm.target.value)
+    })
 });
