@@ -25,6 +25,31 @@ function mesomb_timeout_extend($time)
     return 300;
 }
 
+function t($key) {
+    $locale = substr(get_locale(), 0, 2);
+    $transaction = array(
+        'en' => array(
+            'Pay_with_your' => 'Pay with your',
+            'Pay_with_your_mobile_account' => 'Pay with your Mobile/Orange Money account.',
+            'Phone_Number' => 'Phone Number',
+            'Error_invalid_service' => "Invalid operator it should be Mobile Money or Orange Money",
+            'Error_invalid_phone' =>  "Your phone number format is invalid. It should be in the local format of MTN or Orange expl: 670000000",
+            'Success_payment_done' => "Hey, your order is paid! Thank you!",
+            'General_error' => "Error during the payment process!\nPlease try again and contact the admin if the issue is continue"
+        ),
+        'fr' => array(
+            'Pay_with_your' => 'Payez avec',
+            'Pay_with_your_mobile_account' => 'Payez avec votre compte Mobile/Orange Money.',
+            'Phone_Number' => 'Numéro de Téléphone',
+            'Error_invalid_service' => "Opérateur non valide, cela devrait être Mobile Money ou Orange Money",
+            'Error_invalid_phone' =>  "Le format de votre numéro de téléphone n'est pas valide. Il doit être au format local MTN ou Orange expl: 670000000",
+            'Success_payment_done' => "Hé, votre commande est payée! Merci!",
+            'General_error' => "Erreur lors du processus de paiement!\nVeuillez réessayer et contacter l'administrateur si le problème persiste"
+        ),
+    );
+    return $transaction[$locale][$key];
+}
+
 
 add_action('plugins_loaded', 'mesomb_init_gateway_class');
 function mesomb_init_gateway_class()
@@ -34,8 +59,9 @@ function mesomb_init_gateway_class()
 
         public function __construct()
         {
+            $locale = substr(get_locale(), 0, 2);
             $this->id = 'mesomb';
-            $this->icon = plugins_url('images/logo-long-fr.png', __FILE__); // URL of the icon that will be displayed on checkout page near your gateway name
+            $this->icon = plugins_url($locale == 'en' ? 'images/logo-long-en.png' : 'images/logo-long-fr.png', __FILE__); // URL of the icon that will be displayed on checkout page near your gateway name
             $this->has_fields = true;
             $this->method_title = 'MeSomb Gateway';
             $this->method_description = 'Allow user to make payment with Mobile Money or Orange Money'; // will be displayed on the options page
@@ -102,7 +128,7 @@ function mesomb_init_gateway_class()
                 'application' => array(
                     'title' => 'MeSomb Application Key',
                     'type' => 'password'
-                )
+                ),
             );
         }
 
@@ -138,6 +164,8 @@ function mesomb_init_gateway_class()
 
         public function payment_fields()
         {
+            $locale = substr(get_locale(), 0, 2);
+
             // ok, let's display some description before the payment form
             if ($this->description) {
                 echo wpautop(wp_kses_post($this->description));
@@ -151,7 +179,7 @@ function mesomb_init_gateway_class()
 
             // I recommend to use inique IDs, because other gateways could already use #ccNo, #expdate, #cvc
             echo '<div class="form-row form-row-wide">
-                    <label>Phone Number <span class="required">*</span></label>
+                    <label>'.t('Phone_Number').' <span class="required">*</span></label>
                     <div class="woocommerce-input-wrapper">
                         <input id="payer" type="tel" autocomplete="off" name="payer" placeholder="Expl: 670000000" class="input-text" />
                     </div>
@@ -171,7 +199,7 @@ function mesomb_init_gateway_class()
                                     <img src="'.plugins_url('images/logo-momo.png', __FILE__).'" style="height: 25px;"/>
                                 </span>
                             </span>
-                            <span class="kt-option__body">Pay with your Mobile Money</span>
+                            <span class="kt-option__body">'.t('Pay_with_your').' Mobile Money</span>
                         </span>
                     </label>
                   </div>
@@ -190,11 +218,11 @@ function mesomb_init_gateway_class()
                                     <img src="'.plugins_url('images/logo-orange.jpg', __FILE__).'" style="height: 25px;"/>
                                 </span>
                             </span>
-                            <span class="kt-option__body">Pay with your Orange Money</span>
+                            <span class="kt-option__body">'.t('Pay_with_your').' Orange Money</span>
                         </span>
                     </label>
                   </div>
-                  <img src="'.plugins_url('images/logo-long-fr.png', __FILE__).'" style="width: 300px; margin-top: 10px;" />
+                  <img src="'.plugins_url($locale == 'en' ? 'images/logo-long-en.png' : 'images/logo-long-fr.png', __FILE__).'" style="width: 300px; margin-top: 10px;" />
                   <div class="clear" />
                 </div>';
 
@@ -224,12 +252,12 @@ function mesomb_init_gateway_class()
             $payer = sanitize_text_field($_POST['payer']);
 
             if (!in_array($service, ['ORANGE', 'MTN'])) {
-                wc_add_notice("Invalid operator it should be Mobile Money or Orange Money", 'error');
+                wc_add_notice(t('Error_invalid_service'), 'error');
                 return;
             }
 
             if (!preg_match("/^6\d{8}$/", $payer)) {
-                wc_add_notice("Your phone is not in valid format. It should be in local format of MTN or Orange expl: 670000000", 'error');
+                wc_add_notice(t('Error_invalid_phone'), 'error');
                 return;
             }
 
@@ -247,7 +275,9 @@ function mesomb_init_gateway_class()
             /*
              * Your API interaction could be built with wp_remote_post()
              */
-            $response = wp_remote_post('https://mesomb.hachther.com/api/v1.0/payment/online/', array(
+            $url = 'https://mesomb.hachther.com/api/v1.0/payment/online/';
+            $url = 'http://127.0.0.1:8000/api/v1.0/payment/online/';
+            $response = wp_remote_post($url, array(
                 'body' => json_encode($data),
                 'headers' => array(
                     'X-MeSomb-Application' => $this->application,
@@ -260,13 +290,13 @@ function mesomb_init_gateway_class()
                 $body = json_decode($response['body'], true);
 
                 // it could be different depending on your payment processor
-                if ($body['success'] == true) {
+                if ($body['status'] == 'SUCCESS') {
                     // we received the payment
                     $order->payment_complete();
                     $order->reduce_order_stock();
 
                     // some notes to customer (replace true with false to make it private)
-                    $order->add_order_note('Hey, your order is paid! Thank you!', true);
+                    $order->add_order_note(t('Success_payment_done'), true);
 
                     // Empty cart
                     $woocommerce->cart->empty_cart();
@@ -281,7 +311,7 @@ function mesomb_init_gateway_class()
                     return;
                 }
             } else {
-                wc_add_notice("Error during the payment process\n Please try aging and contact admin if the issue is continue", 'error');
+                wc_add_notice(t('General_error'), 'error');
                 return;
             }
         }
