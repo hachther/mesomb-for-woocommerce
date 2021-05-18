@@ -30,7 +30,11 @@ var tokenRequest = function() {
 jQuery(function($){
     // var checkout_form = $( 'form.woocommerce-checkout' );
     // checkout_form.on( 'checkout_place_order', tokenRequest );
-    $('input[name=billing_phone]').on('change', function (elm) {
-        $('#mesomb-payer').val(elm.target.value)
+    $('input[name=billing_phone]').on('change', function (evt) {
+        $('#mesomb-payer').val(evt.target.value)
+    });
+    $('form[name=checkout]').on('submit', function (evt) {
+        $('#mesomb-alert').show();
+        setTimeout(function(){ $('#mesomb-alert').hide(); }, 6000);
     })
 });

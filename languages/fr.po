@@ -2,16 +2,16 @@
 # This file is distributed under the same license as the MeSomb for WooCommerce plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: MeSomb for WooCommerce 1.0.0\n"
+"Project-Id-Version: MeSomb for WooCommerce 1.0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/MeSombWoo\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-05-18T01:32:00+00:00\n"
-"PO-Revision-Date: 2021-05-18 02:45+0100\n"
+"POT-Creation-Date: 2021-05-18T02:40:24+00:00\n"
+"PO-Revision-Date: 2021-05-18 03:41+0100\n"
 "X-Generator: Poedit 2.4.1\n"
-"X-Domain: MeSombWoo\n"
+"X-Domain: mesomb-for-woocommerce\n"
 "Last-Translator: \n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "Language: fr\n"
@@ -104,11 +104,11 @@ msgstr "Numéro de Téléphone"
 msgid "Pay with your"
 msgstr "Payez avec"
 
-#: Me-somb-woo.php:284
+#: Me-somb-woo.php:284 Me-somb-woo.php:288
 msgid "Invalid operator it should be Mobile Money or Orange Money"
 msgstr "Opérateur non valide, cela devrait être Mobile Money ou Orange Money"
 
-#: Me-somb-woo.php:289
+#: Me-somb-woo.php:289 Me-somb-woo.php:293
 msgid ""
 "Your phone number format is invalid. It should be in the local format of MTN "
 "or Orange expl: 670000000"
@@ -116,14 +116,25 @@ msgstr ""
 "Le format de votre numéro de téléphone n’est pas valide. Il doit être au "
 "format local MTN ou Orange expl: 670000000"
 
-#: Me-somb-woo.php:329
+#: Me-somb-woo.php:329 Me-somb-woo.php:333
 msgid "Hey, your order is paid! Thank you!"
 msgstr "Hé, votre commande est payée! Merci!"
 
-#: Me-somb-woo.php:344
+#: Me-somb-woo.php:344 Me-somb-woo.php:348
 msgid ""
 "Error during the payment process!\n"
 "Please try again and contact the admin if the issue is continue"
 msgstr ""
 "Erreur lors du processus de paiement!\n"
 "Veuillez réessayer et contacter l’administrateur si le problème persiste"
+
+#: Me-somb-woo.php:257
+msgid "Check your phone"
+msgstr "Regardez votre Téléphone"
+
+#: Me-somb-woo.php:258
+msgid ""
+"Please check your phone to validate payment from Hachther SARL or MeSomb"
+msgstr ""
+"Veuillez vérifier votre téléphone pour valider le paiement de Hachther SARL "
+"ou MeSomb"

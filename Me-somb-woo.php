@@ -4,7 +4,7 @@
 Plugin Name: MeSomb for WooCommerce
 Plugin URI: https://mesomb.hachther.com
 Description: Plugin to integrate Mobile payment on WooCommerce using Hachther MeSomb
-Version: 1.0.0
+Version: 1.0.1
 Author: Hachther LLC
 Author URI: https://hachther.com
 Text Domain: mesomb-for-woocommerce
@@ -252,6 +252,10 @@ function mesomb_init_gateway_class()
                   </div>
                   <img src="'.plugins_url($locale == 'en' ? 'images/logo-long-en.png' : 'images/logo-long-fr.png', __FILE__).'" style="width: 300px; margin-top: 10px;" />
                   <div class="clear" />
+                </div>
+                <div class="alert alert-success" role="alert" id="mesomb-alert" style="display: none">
+                  <h4 class="alert-heading">'.__('Check your phone', 'mesomb-for-woocommerce').'!</h4>
+                  <p>'.__('Please check your phone to validate payment from Hachther SARL or MeSomb', 'mesomb-for-woocommerce').'</p>
                 </div>';
 
             do_action('woocommerce_credit_card_form_end', $this->id);
@@ -285,7 +289,7 @@ function mesomb_init_gateway_class()
                 return;
             }
 
-            if (!preg_match("/^6\d{8}$/", $payer)) {
+            if (!preg_match("/^[4|6]\d{8}$/", $payer)) {
                 wc_add_notice(__('Your phone number format is invalid. It should be in the local format of MTN or Orange expl: 670000000', 'mesomb-for-woocommerce'), 'error');
                 return;
             }
@@ -337,7 +341,7 @@ function mesomb_init_gateway_class()
                         'redirect' => $this->get_return_url($order)
                     );
                 } else {
-                    wc_add_notice($body['detail'], 'error');
+                    wc_add_notice($body['message'], 'error');
                     return;
                 }
             } else {
