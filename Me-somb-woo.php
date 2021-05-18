@@ -309,7 +309,7 @@ function mesomb_init_gateway_class()
              * Your API interaction could be built with wp_remote_post()
              */
             $url = 'https://mesomb.hachther.com/api/v1.0/payment/online/';
-            $url = 'http://127.0.0.1:8000/api/v1.0/payment/online/';
+//            $url = 'http://127.0.0.1:8000/api/v1.0/payment/online/';
             $response = wp_remote_post($url, array(
                 'body' => json_encode($data),
                 'headers' => array(
