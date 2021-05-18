@@ -7,6 +7,8 @@ Description: Plugin to integrate Mobile payment on WooCommerce using Hachther Me
 Version: 1.0.0
 Author: Hachther LLC
 Author URI: https://hachther.com
+Text Domain: mesomb-for-woocommerce
+Domain Path: /languages
 */
 
 /*
@@ -25,54 +27,56 @@ function mesomb_timeout_extend($time)
     return 300;
 }
 
-function t($key) {
-    $locale = substr(get_locale(), 0, 2);
-    $transaction = array(
-        'en' => array(
-            'Pay_with_your' => 'Pay with your',
-            'Pay_with_your_mobile_account' => 'Pay with your Mobile/Orange Money account.',
-            'Phone_Number' => 'Phone Number',
-            'Error_invalid_service' => "Invalid operator it should be Mobile Money or Orange Money",
-            'Error_invalid_phone' =>  "Your phone number format is invalid. It should be in the local format of MTN or Orange expl: 670000000",
-            'Success_payment_done' => "Hey, your order is paid! Thank you!",
-            'General_error' => "Error during the payment process!\nPlease try again and contact the admin if the issue is continue",
-            'Title_Title' => 'Title',
-            'Title_Description' => 'This controls the title which the user sees during checkout.',
-            'Title_Default' => 'MeSomb Mobile Payment',
-            'Enable_Disable_Title' => 'Enable/Disable',
-            'Enable_MeSomb_Gateway' => 'Enable MeSomb Gateway',
-            'Description_Title' => 'Description',
-            'Description_Description' => 'This controls the description which the user sees during checkout.',
-            'Description_Default' => 'Pay with your Mobile/Orange Money account.',
-            'Fees_Included_Title' => 'Fees Included',
-            'Fees_Included_Label' => 'Fees are already included in the displayed price',
-            'Fees_Included_Description' => 'This control if the MeSomb fees is already included in the price shown to users',
-            'Application_Title' => 'MeSomb Application Key'
-        ),
-        'fr' => array(
-            'Pay_with_your' => 'Payez avec',
-            'Pay_with_your_mobile_account' => 'Payez avec votre compte Mobile/Orange Money.',
-            'Phone_Number' => 'Numéro de Téléphone',
-            'Error_invalid_service' => "Opérateur non valide, cela devrait être Mobile Money ou Orange Money",
-            'Error_invalid_phone' =>  "Le format de votre numéro de téléphone n'est pas valide. Il doit être au format local MTN ou Orange expl: 670000000",
-            'Success_payment_done' => "Hé, votre commande est payée! Merci!",
-            'General_error' => "Erreur lors du processus de paiement!\nVeuillez réessayer et contacter l'administrateur si le problème persiste",
-            'Title_Title' => 'Titre',
-            'Title_Description' => "Ceci contrôle le titre que l'utilisateur voit lors du paiement.",
-            'Title_Default' => 'Paiement Mobile MeSomb',
-            'Enable_Disable_Title' => 'Activer/Désactiver',
-            'Enable_MeSomb_Gateway' => 'Activer la Passerelle MeSomb',
-            'Description_Title' => 'Description',
-            'Description_Description' => "Ceci contrôle la description que l'utilisateur voit lors du paiement.",
-            'Description_Default' => 'Payez avec votre compte Mobile/Orange Money.',
-            'Fees_Included_Title' => 'Frais inclus',
-            'Fees_Included_Label' => 'Les frais sont déjà inclus dans le prix affiché',
-            'Fees_Included_Description' => 'Ceci contrôle si les frais MeSomb sont déjà inclus dans le prix affiché aux utilisateurs',
-            'Application_Title' => "Clé d'Application MeSomb"
-        ),
-    );
-    return $transaction[$locale][$key];
-}
+//function t($key) {
+//    $locale = substr(get_locale(), 0, 2);
+//    $transaction = array(
+//        'en' => array(
+//            'Pay_with_your' => 'Pay with your',
+//            'Pay_with_your_mobile_account' => 'Pay with your Mobile/Orange Money account.',
+//            'Phone_Number' => 'Phone Number',
+//            'Error_invalid_service' => "Invalid operator it should be Mobile Money or Orange Money",
+//            'Error_invalid_phone' =>  "Your phone number format is invalid. It should be in the local format of MTN or Orange expl: 670000000",
+//            'Success_payment_done' => "Hey, your order is paid! Thank you!",
+//            'General_error' => "Error during the payment process!\nPlease try again and contact the admin if the issue is continue",
+//            'Title_Title' => 'Title',
+//            'Title_Description' => 'This controls the title which the user sees during checkout.',
+//            'Title_Default' => 'MeSomb Mobile Payment',
+//            'Enable_Disable_Title' => 'Enable/Disable',
+//            'Enable_MeSomb_Gateway' => 'Enable MeSomb Gateway',
+//            'Description_Title' => 'Description',
+//            'Description_Description' => 'This controls the description which the user sees during checkout.',
+//            'Description_Default' => 'Pay with your Mobile/Orange Money account.',
+//            'Fees_Included_Title' => 'Fees Included',
+//            'Fees_Included_Label' => 'Fees are already included in the displayed price',
+//            'Fees_Included_Description' => 'This control if the MeSomb fees is already included in the price shown to users',
+//            'Application_Title' => 'MeSomb Application Key',
+//            'method_description' => 'Allow user to make payment with Mobile Money or Orange Money'
+//        ),
+//        'fr' => array(
+//            'Pay_with_your' => 'Payez avec',
+//            'Pay_with_your_mobile_account' => 'Payez avec votre compte Mobile/Orange Money.',
+//            'Phone_Number' => 'Numéro de Téléphone',
+//            'Error_invalid_service' => "Opérateur non valide, cela devrait être Mobile Money ou Orange Money",
+//            'Error_invalid_phone' =>  "Le format de votre numéro de téléphone n'est pas valide. Il doit être au format local MTN ou Orange expl: 670000000",
+//            'Success_payment_done' => "Hé, votre commande est payée! Merci!",
+//            'General_error' => "Erreur lors du processus de paiement!\nVeuillez réessayer et contacter l'administrateur si le problème persiste",
+//            'Title_Title' => 'Titre',
+//            'Title_Description' => "Ceci contrôle le titre que l'utilisateur voit lors du paiement.",
+//            'Title_Default' => 'Paiement Mobile MeSomb',
+//            'Enable_Disable_Title' => 'Activer/Désactiver',
+//            'Enable_MeSomb_Gateway' => 'Activer la Passerelle MeSomb',
+//            'Description_Title' => 'Description',
+//            'Description_Description' => "Ceci contrôle la description que l'utilisateur voit lors du paiement.",
+//            'Description_Default' => 'Payez avec votre compte Mobile/Orange Money.',
+//            'Fees_Included_Title' => 'Frais inclus',
+//            'Fees_Included_Label' => 'Les frais sont déjà inclus dans le prix affiché',
+//            'Fees_Included_Description' => 'Ceci contrôle si les frais MeSomb sont déjà inclus dans le prix affiché aux utilisateurs',
+//            'Application_Title' => "Clé d'Application MeSomb",
+//            'method_description' => "Autoriser l'utilisateur à effectuer un paiement avec Mobile Money ou Orange Money"
+//        ),
+//    );
+//    return $transaction[$locale][$key];
+//}
 
 
 add_action('plugins_loaded', 'mesomb_init_gateway_class');
@@ -88,7 +92,7 @@ function mesomb_init_gateway_class()
             $this->icon = plugins_url($locale == 'en' ? 'images/logo-long-en.png' : 'images/logo-long-fr.png', __FILE__); // URL of the icon that will be displayed on checkout page near your gateway name
             $this->has_fields = true;
             $this->method_title = 'MeSomb Gateway';
-            $this->method_description = 'Allow user to make payment with Mobile Money or Orange Money'; // will be displayed on the options page
+            $this->method_description = __('Allow user to make payment with Mobile Money or Orange Money', 'mesomb-for-woocommerce'); // will be displayed on the options page
 
             // gateways can support subscriptions, refunds, saved payment methods,
             $this->supports = array(
@@ -122,35 +126,35 @@ function mesomb_init_gateway_class()
         {
             $this->form_fields = array(
                 'enabled' => array(
-                    'title' => t('Enable_Disable_Title'),
-                    'label' => t('Enable_MeSomb_Gateway'),
+                    'title' => __('Enable/Disable', 'mesomb-for-woocommerce'),
+                    'label' => __('Enable MeSomb Gateway', 'mesomb-for-woocommerce'),
                     'type' => 'checkbox',
                     'description' => '',
                     'default' => 'no'
                 ),
                 'title' => array(
-                    'title' => t('Title_Title'),
+                    'title' => __('Title', 'mesomb-for-woocommerce'),
                     'type' => 'text',
-                    'description' => t('Title_Description'),
-                    'default' => t('Title_Default'),
+                    'description' => __('This controls the title which the user sees during checkout.', 'mesomb-for-woocommerce'),
+                    'default' => __('MeSomb Mobile Payment', 'mesomb-for-woocommerce'),
                     'desc_tip' => true,
                 ),
                 'description' => array(
-                    'title' => t('Description_Title'),
+                    'title' => __('Description', 'mesomb-for-woocommerce'),
                     'type' => 'textarea',
-                    'description' => t('Description_Description'),
-                    'default' => t('Description_Default'),
+                    'description' => __('This controls the description which the user sees during checkout.', 'mesomb-for-woocommerce'),
+                    'default' => __('Pay with your Mobile/Orange Money account.', 'mesomb-for-woocommerce'),
                 ),
                 'fees_included' => array(
-                    'title' => t('Fees_Included_Title'),
-                    'label' => t('Fees_Included_Label'),
+                    'title' => __('Fees Included', 'mesomb-for-woocommerce'),
+                    'label' => __('Fees are already included in the displayed price', 'mesomb-for-woocommerce'),
                     'type' => 'checkbox',
-                    'description' => t('Fees_Included_Description'),
+                    'description' => __('This control if the MeSomb fees is already included in the price shown to users', 'mesomb-for-woocommerce'),
                     'default' => 'yes',
                     'desc_tip' => true,
                 ),
                 'application' => array(
-                    'title' => t('Application_Title'),
+                    'title' => __('MeSomb Application Key', 'mesomb-for-woocommerce'),
                     'type' => 'password'
                 ),
             );
@@ -203,7 +207,7 @@ function mesomb_init_gateway_class()
 
             // I recommend to use inique IDs, because other gateways could already use #ccNo, #expdate, #cvc
             echo '<div class="form-row form-row-wide">
-                    <label>'.t('Phone_Number').' <span class="required">*</span></label>
+                    <label>'.__('Phone Number', 'mesomb-for-woocommerce').' <span class="required">*</span></label>
                     <div class="woocommerce-input-wrapper">
                         <input id="payer" type="tel" autocomplete="off" name="payer" placeholder="Expl: 670000000" class="input-text" />
                     </div>
@@ -223,7 +227,7 @@ function mesomb_init_gateway_class()
                                     <img src="'.plugins_url('images/logo-momo.png', __FILE__).'" style="height: 25px; border-radius: 13px;"/>
                                 </span>
                             </span>
-                            <span class="kt-option__body">'.t('Pay_with_your').' Mobile Money</span>
+                            <span class="kt-option__body">'.__('Pay with your', 'mesomb-for-woocommerce').' Mobile Money</span>
                         </span>
                     </label>
                   </div>
@@ -242,7 +246,7 @@ function mesomb_init_gateway_class()
                                     <img src="'.plugins_url('images/logo-orange.jpg', __FILE__).'" style="height: 25px; border-radius: 13px;"/>
                                 </span>
                             </span>
-                            <span class="kt-option__body">'.t('Pay_with_your').' Orange Money</span>
+                            <span class="kt-option__body">'.__('Pay with your', 'mesomb-for-woocommerce').' Orange Money</span>
                         </span>
                     </label>
                   </div>
@@ -277,12 +281,12 @@ function mesomb_init_gateway_class()
             $payer = sanitize_text_field($_POST['payer']);
 
             if (!in_array($service, ['ORANGE', 'MTN'])) {
-                wc_add_notice(t('Error_invalid_service'), 'error');
+                wc_add_notice(__('Invalid operator it should be Mobile Money or Orange Money', 'mesomb-for-woocommerce'), 'error');
                 return;
             }
 
             if (!preg_match("/^6\d{8}$/", $payer)) {
-                wc_add_notice(t('Error_invalid_phone'), 'error');
+                wc_add_notice(__('Your phone number format is invalid. It should be in the local format of MTN or Orange expl: 670000000', 'mesomb-for-woocommerce'), 'error');
                 return;
             }
 
@@ -322,7 +326,7 @@ function mesomb_init_gateway_class()
 //                    $order->reduce_order_stock();
 
                     // some notes to customer (replace true with false to make it private)
-                    $order->add_order_note(t('Success_payment_done'), true);
+                    $order->add_order_note(__('Hey, your order is paid! Thank you!', 'mesomb-for-woocommerce'), true);
 
                     // Empty cart
                     $woocommerce->cart->empty_cart();
@@ -337,7 +341,7 @@ function mesomb_init_gateway_class()
                     return;
                 }
             } else {
-                wc_add_notice(t('General_error'), 'error');
+                wc_add_notice(__("Error during the payment process!\nPlease try again and contact the admin if the issue is continue", 'mesomb-for-woocommerce'), 'error');
                 return;
             }
         }
