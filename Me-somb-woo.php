@@ -35,7 +35,19 @@ function t($key) {
             'Error_invalid_service' => "Invalid operator it should be Mobile Money or Orange Money",
             'Error_invalid_phone' =>  "Your phone number format is invalid. It should be in the local format of MTN or Orange expl: 670000000",
             'Success_payment_done' => "Hey, your order is paid! Thank you!",
-            'General_error' => "Error during the payment process!\nPlease try again and contact the admin if the issue is continue"
+            'General_error' => "Error during the payment process!\nPlease try again and contact the admin if the issue is continue",
+            'Title_Title' => 'Title',
+            'Title_Description' => 'This controls the title which the user sees during checkout.',
+            'Title_Default' => 'MeSomb Mobile Payment',
+            'Enable_Disable_Title' => 'Enable/Disable',
+            'Enable_MeSomb_Gateway' => 'Enable MeSomb Gateway',
+            'Description_Title' => 'Description',
+            'Description_Description' => 'This controls the description which the user sees during checkout.',
+            'Description_Default' => 'Pay with your Mobile/Orange Money account.',
+            'Fees_Included_Title' => 'Fees Included',
+            'Fees_Included_Label' => 'Fees are already included in the displayed price',
+            'Fees_Included_Description' => 'This control if the MeSomb fees is already included in the price shown to users',
+            'Application_Title' => 'MeSomb Application Key'
         ),
         'fr' => array(
             'Pay_with_your' => 'Payez avec',
@@ -44,7 +56,19 @@ function t($key) {
             'Error_invalid_service' => "Opérateur non valide, cela devrait être Mobile Money ou Orange Money",
             'Error_invalid_phone' =>  "Le format de votre numéro de téléphone n'est pas valide. Il doit être au format local MTN ou Orange expl: 670000000",
             'Success_payment_done' => "Hé, votre commande est payée! Merci!",
-            'General_error' => "Erreur lors du processus de paiement!\nVeuillez réessayer et contacter l'administrateur si le problème persiste"
+            'General_error' => "Erreur lors du processus de paiement!\nVeuillez réessayer et contacter l'administrateur si le problème persiste",
+            'Title_Title' => 'Titre',
+            'Title_Description' => "Ceci contrôle le titre que l'utilisateur voit lors du paiement.",
+            'Title_Default' => 'Paiement Mobile MeSomb',
+            'Enable_Disable_Title' => 'Activer/Désactiver',
+            'Enable_MeSomb_Gateway' => 'Activer la Passerelle MeSomb',
+            'Description_Title' => 'Description',
+            'Description_Description' => "Ceci contrôle la description que l'utilisateur voit lors du paiement.",
+            'Description_Default' => 'Payez avec votre compte Mobile/Orange Money.',
+            'Fees_Included_Title' => 'Frais inclus',
+            'Fees_Included_Label' => 'Les frais sont déjà inclus dans le prix affiché',
+            'Fees_Included_Description' => 'Ceci contrôle si les frais MeSomb sont déjà inclus dans le prix affiché aux utilisateurs',
+            'Application_Title' => "Clé d'Application MeSomb"
         ),
     );
     return $transaction[$locale][$key];
@@ -98,35 +122,35 @@ function mesomb_init_gateway_class()
         {
             $this->form_fields = array(
                 'enabled' => array(
-                    'title' => 'Enable/Disable',
-                    'label' => 'Enable MeSomb Gateway',
+                    'title' => t('Enable_Disable_Title'),
+                    'label' => t('Enable_MeSomb_Gateway'),
                     'type' => 'checkbox',
                     'description' => '',
                     'default' => 'no'
                 ),
                 'title' => array(
-                    'title' => 'Title',
+                    'title' => t('Title_Title'),
                     'type' => 'text',
-                    'description' => 'This controls the title which the user sees during checkout.',
-                    'default' => 'MeSomb Mobile Payment',
+                    'description' => t('Title_Description'),
+                    'default' => t('Title_Default'),
                     'desc_tip' => true,
                 ),
                 'description' => array(
-                    'title' => 'Description',
+                    'title' => t('Description_Title'),
                     'type' => 'textarea',
-                    'description' => 'This controls the description which the user sees during checkout.',
-                    'default' => 'Pay with your Mobile/Orange Money account.',
+                    'description' => t('Description_Description'),
+                    'default' => t('Description_Default'),
                 ),
                 'fees_included' => array(
-                    'title' => 'Fees Included',
-                    'label' => 'Fees is already included to the displayed price',
+                    'title' => t('Fees_Included_Title'),
+                    'label' => t('Fees_Included_Label'),
                     'type' => 'checkbox',
-                    'description' => 'This control if the MeSomb fees is already include in the price show to users',
+                    'description' => t('Fees_Included_Description'),
                     'default' => 'yes',
                     'desc_tip' => true,
                 ),
                 'application' => array(
-                    'title' => 'MeSomb Application Key',
+                    'title' => t('Application_Title'),
                     'type' => 'password'
                 ),
             );
@@ -196,7 +220,7 @@ function mesomb_init_gateway_class()
                         </span>
                                 <span class="kt-option__title">Mobile Money</span>
                                 <span class="kt-option__focus">
-                                    <img src="'.plugins_url('images/logo-momo.png', __FILE__).'" style="height: 25px;"/>
+                                    <img src="'.plugins_url('images/logo-momo.png', __FILE__).'" style="height: 25px; border-radius: 13px;"/>
                                 </span>
                             </span>
                             <span class="kt-option__body">'.t('Pay_with_your').' Mobile Money</span>
@@ -215,7 +239,7 @@ function mesomb_init_gateway_class()
                         </span>
                                 <span class="kt-option__title">Orange Money</span>
                                 <span class="kt-option__focus">
-                                    <img src="'.plugins_url('images/logo-orange.jpg', __FILE__).'" style="height: 25px;"/>
+                                    <img src="'.plugins_url('images/logo-orange.jpg', __FILE__).'" style="height: 25px; border-radius: 13px;"/>
                                 </span>
                             </span>
                             <span class="kt-option__body">'.t('Pay_with_your').' Orange Money</span>
@@ -247,6 +271,7 @@ function mesomb_init_gateway_class()
 
 
             // we need it to get any order detailes
+            $locale = substr(get_locale(), 0, 2);
             $order = wc_get_order($order_id);
             $service = $_POST['service'];
             $payer = sanitize_text_field($_POST['payer']);
@@ -282,7 +307,7 @@ function mesomb_init_gateway_class()
                 'headers' => array(
                     'X-MeSomb-Application' => $this->application,
                     'Content-Type' => 'application/json',
-                    'Accept-Language' => get_locale()
+                    'Accept-Language' => $locale
                 )
             ));
 
@@ -293,7 +318,8 @@ function mesomb_init_gateway_class()
                 if ($body['status'] == 'SUCCESS') {
                     // we received the payment
                     $order->payment_complete();
-                    $order->reduce_order_stock();
+                    wc_reduce_stock_levels($order_id);
+//                    $order->reduce_order_stock();
 
                     // some notes to customer (replace true with false to make it private)
                     $order->add_order_note(t('Success_payment_done'), true);
