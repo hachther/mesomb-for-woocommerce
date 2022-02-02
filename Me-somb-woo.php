@@ -4,7 +4,7 @@
 Plugin Name: MeSomb for WooCommerce
 Plugin URI: https://mesomb.hachther.com
 Description: Plugin to integrate Mobile payment on WooCommerce using Hachther MeSomb
-Version: 1.0.1
+Version: 1.1
 Author: Hachther LLC
 Author URI: https://hachther.com
 Text Domain: mesomb-for-woocommerce
@@ -111,6 +111,7 @@ function mesomb_init_gateway_class()
             $this->application = $this->get_option('application');
             $this->account = $this->get_option('account');
             $this->fees_included = $this->get_option('fees_included');
+            $this->conversion = $this->get_option('conversion');
 
             // This action hook saves the settings
             add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
@@ -156,6 +157,12 @@ function mesomb_init_gateway_class()
                 'application' => array(
                     'title' => __('MeSomb Application Key', 'mesomb-for-woocommerce'),
                     'type' => 'password'
+                ),
+                'conversion' => array(
+                    'title' => __('Currency Conversion', 'mesomb-for-woocommerce'),
+                    'label' => __('Rely on MeSomb to automatically convert foreign currencies', 'mesomb-for-woocommerce'),
+                    'type' => 'checkbox',
+                    'default' => 'yes',
                 ),
             );
         }
@@ -250,7 +257,6 @@ function mesomb_init_gateway_class()
                         </span>
                     </label>
                   </div>
-                  <img src="'.plugins_url($locale == 'en' ? 'images/logo-long-en.png' : 'images/logo-long-fr.png', __FILE__).'" style="width: 300px; margin-top: 10px;" />
                   <div class="clear" />
                 </div>
                 <div class="alert alert-success" role="alert" id="mesomb-alert" style="display: none">
@@ -299,17 +305,29 @@ function mesomb_init_gateway_class()
                 'payer' => '237'.$payer,
                 'service' => $service,
                 'fees' => $this->fees_included == 'yes' ? true : false,
-                'currency' => 'XAF', //$order->get_order_currency(),
+                'conversion' => $this->conversion == 'yes' ? true : false,
+                'currency' => $order->get_order_currency(),
                 'message' => $order->get_customer_note().' '.get_bloginfo('name'),
-                'external_id' => $order->get_id(),
+                'reference' => $order->get_id(),
                 'country' => 'CM',
+                'customer' => array(
+                    'first_name' => $order->get_billing_first_name(),
+                    'last_name' => $order->get_billing_last_name(),
+                    'town' => $order->get_billing_city(),
+                    'region' => $order->get_billing_state(),
+                    'country' => $order->get_billing_country(),
+                    'email' => $order->get_billing_email(),
+                    'phone' => $order->get_billing_phone(),
+                    'address_1' => $order->get_billing_address_1(),
+                    'postcode' => $order->get_billing_postcode(),
+                )
             );
 
             /*
              * Your API interaction could be built with wp_remote_post()
              */
             $url = 'https://mesomb.hachther.com/api/v1.0/payment/online/';
-//            $url = 'http://127.0.0.1:8000/api/v1.0/payment/online/';
+            $url = 'http://127.0.0.1:8000/api/v1.0/payment/online/';
             $response = wp_remote_post($url, array(
                 'body' => json_encode($data),
                 'headers' => array(

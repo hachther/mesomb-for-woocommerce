@@ -4,147 +4,127 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MeSomb for WooCommerce 1.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/MeSombWoo\n"
-"Language-Team: \n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2022-02-02T11:57:57+00:00\n"
-"PO-Revision-Date: 2022-02-02 13:07+0100\n"
-"X-Generator: Poedit 2.4.1\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: mesomb-for-woocommerce\n"
-"Last-Translator: \n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"Language: fr\n"
 
 #. Plugin Name of the plugin
 msgid "MeSomb for WooCommerce"
-msgstr "MeSomb pour WooCommerce"
+msgstr ""
 
 #. Plugin URI of the plugin
 msgid "https://mesomb.hachther.com"
-msgstr "https://mesomb.hachther.com"
+msgstr ""
 
 #. Description of the plugin
 msgid "Plugin to integrate Mobile payment on WooCommerce using Hachther MeSomb"
 msgstr ""
-"Plugin pour intégrer le paiement mobile sur WooCommerce en utilisant "
-"Hachther MeSomb"
 
 #. Author of the plugin
 msgid "Hachther LLC"
-msgstr "Hachther SARL"
+msgstr ""
 
 #. Author URI of the plugin
 msgid "https://hachther.com"
-msgstr "https://hachther.com/fr"
+msgstr ""
 
 #: Me-somb-woo.php:95
 msgid "Allow user to make payment with Mobile Money or Orange Money"
 msgstr ""
-"Permettre à l’utilisateur d’effectuer un paiement avec Mobile Money ou "
-"Mobile Money"
 
 #: Me-somb-woo.php:130
 msgid "Enable/Disable"
-msgstr "Activer/Désactiver"
+msgstr ""
 
 #: Me-somb-woo.php:131
 msgid "Enable MeSomb Gateway"
-msgstr "Activer la Passerelle MeSomb"
+msgstr ""
 
 #: Me-somb-woo.php:137
 msgid "Title"
-msgstr "Titre"
+msgstr ""
 
 #: Me-somb-woo.php:139
 msgid "This controls the title which the user sees during checkout."
-msgstr "Ceci contrôle le titre que l’utilisateur voit lors du paiement."
+msgstr ""
 
 #: Me-somb-woo.php:140
 msgid "MeSomb Mobile Payment"
-msgstr "Paiement Mobile"
+msgstr ""
 
 #: Me-somb-woo.php:144
 msgid "Description"
-msgstr "Description"
+msgstr ""
 
 #: Me-somb-woo.php:146
 msgid "This controls the description which the user sees during checkout."
-msgstr "Ceci contrôle la description que l’utilisateur voit lors du paiement."
+msgstr ""
 
 #: Me-somb-woo.php:147
 msgid "Pay with your Mobile/Orange Money account."
-msgstr "Payez avec votre compte Mobile/Orange Money."
+msgstr ""
 
 #: Me-somb-woo.php:150
 msgid "Fees Included"
-msgstr "Frais inclus"
+msgstr ""
 
 #: Me-somb-woo.php:151
 msgid "Fees are already included in the displayed price"
-msgstr "Les frais sont déjà inclus dans le prix affiché"
+msgstr ""
 
 #: Me-somb-woo.php:153
-msgid ""
-"This control if the MeSomb fees is already included in the price shown to "
-"users"
+msgid "This control if the MeSomb fees is already included in the price shown to users"
 msgstr ""
-"Ceci contrôle si les frais MeSomb sont déjà inclus dans le prix affiché aux "
-"utilisateurs"
 
 #: Me-somb-woo.php:158
 msgid "MeSomb Application Key"
-msgstr "Clé d’Application MeSomb"
+msgstr ""
 
 #: Me-somb-woo.php:162
 msgid "Currency Conversion"
-msgstr "Conversion de Devises"
+msgstr ""
 
 #: Me-somb-woo.php:163
 msgid "Rely on MeSomb to automatically convert foreign currencies"
 msgstr ""
-"Faire confiance à MeSomb pour convertir automatiquement les devises "
-"étrangères"
 
 #: Me-somb-woo.php:217
 msgid "Phone Number"
-msgstr "Numéro de Téléphone"
+msgstr ""
 
-#: Me-somb-woo.php:237 Me-somb-woo.php:256
+#: Me-somb-woo.php:237
+#: Me-somb-woo.php:256
 msgid "Pay with your"
-msgstr "Payez avec"
+msgstr ""
 
 #: Me-somb-woo.php:263
 msgid "Check your phone"
-msgstr "Regardez votre Téléphone"
+msgstr ""
 
 #: Me-somb-woo.php:264
-msgid ""
-"Please check your phone to validate payment from Hachther SARL or MeSomb"
+msgid "Please check your phone to validate payment from Hachther SARL or MeSomb"
 msgstr ""
-"Veuillez vérifier votre téléphone pour valider le paiement de Hachther SARL "
-"ou MeSomb"
 
 #: Me-somb-woo.php:294
 msgid "Invalid operator it should be Mobile Money or Orange Money"
-msgstr "Opérateur non valide, cela devrait être Mobile Money ou Orange Money"
+msgstr ""
 
 #: Me-somb-woo.php:299
-msgid ""
-"Your phone number format is invalid. It should be in the local format of MTN "
-"or Orange expl: 670000000"
+msgid "Your phone number format is invalid. It should be in the local format of MTN or Orange expl: 670000000"
 msgstr ""
-"Le format de votre numéro de téléphone n’est pas valide. Il doit être au "
-"format local MTN ou Orange expl: 670000000"
 
 #: Me-somb-woo.php:351
 msgid "Hey, your order is paid! Thank you!"
-msgstr "Hé, votre commande est payée! Merci!"
+msgstr ""
 
 #: Me-somb-woo.php:366
 msgid ""
 "Error during the payment process!\n"
 "Please try again and contact the admin if the issue is continue"
 msgstr ""
-"Erreur lors du processus de paiement!\n"
-"Veuillez réessayer et contacter l’administrateur si le problème persiste"
