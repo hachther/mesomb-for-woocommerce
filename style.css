@@ -82,3 +82,7 @@
     border: 1px solid transparent;
     border-radius: .25rem;
 }
+
+.field-label {
+    font-weight: 700 !important;
+}

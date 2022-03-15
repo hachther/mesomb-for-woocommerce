@@ -1,10 +1,10 @@
 === MeSomb WooCommerce ===
 Contributors: hachther
-Tags: ecommerce, payment, mobile money, orange money, woo commerce
+Tags: ecommerce, payment, mobile money, orange money, woo commerce, Cameroon, Niger
 Requires at least: 5.2
 Tested up to: 5.7.2
 Requires PHP: 7.0
-Stable tag: 1.1.0
+Stable tag: 1.1.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 

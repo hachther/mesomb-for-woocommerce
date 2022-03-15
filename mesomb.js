@@ -32,6 +32,15 @@ jQuery(function($){
     // checkout_form.on( 'checkout_place_order', tokenRequest );
     $('input[name=billing_phone]').on('change', function (evt) {
         $('#mesomb-payer').val(evt.target.value)
+    })
+    $('body').on('change', 'input[name=country]', function (evt) {
+        const country = evt.target.value;
+        if (country) {
+            console.log('country', country);
+            $('.provider-row input').prop('checked', false);
+            $('.provider-row').hide();
+            $('.' + country).show();
+        }
     });
     $('form[name=checkout]').on('submit', function (evt) {
         $('#mesomb-alert').show();

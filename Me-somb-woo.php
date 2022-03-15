@@ -4,7 +4,7 @@
 Plugin Name: MeSomb for WooCommerce
 Plugin URI: https://mesomb.hachther.com
 Description: Plugin to integrate Mobile payment on WooCommerce using Hachther MeSomb
-Version: 1.1
+Version: 1.1.2
 Author: Hachther LLC
 Author URI: https://hachther.com
 Text Domain: mesomb-for-woocommerce
@@ -98,6 +98,30 @@ function mesomb_init_gateway_class()
             $this->supports = array(
                 'products'
             );
+            $this->countriesList = array(
+                'CM' => __('Cameroon', 'mesomb-for-woocommerce'),
+                'NE' => __('Niger', 'mesomb-for-woocommerce')
+            );
+            $this->providers = array(
+                array(
+                    'key' => 'MTN',
+                    'name' => 'Mobile Money',
+                    'icon' => plugins_url('images/logo-momo.png', __FILE__),
+                    'countries' => array('CM')
+                ),
+                array(
+                    'key' => 'ORANGE',
+                    'name' => 'Orange Money',
+                    'icon' => plugins_url('images/logo-orange.jpg', __FILE__),
+                    'countries' => array('CM')
+                ),
+                array(
+                    'key' => 'AIRTEL',
+                    'name' => 'Airtel Money',
+                    'icon' => plugins_url('images/logo-airtel.jpg', __FILE__),
+                    'countries' => array('NE')
+                )
+            );
 
             // Method with all the options fields
             $this->init_form_fields();
@@ -109,6 +133,7 @@ function mesomb_init_gateway_class()
             $this->enabled = $this->get_option('enabled');
             $this->testmode = 'yes' === $this->get_option('testmode');
             $this->application = $this->get_option('application');
+            $this->countries = $this->get_option('countries');
             $this->account = $this->get_option('account');
             $this->fees_included = $this->get_option('fees_included');
             $this->conversion = $this->get_option('conversion');
@@ -121,6 +146,11 @@ function mesomb_init_gateway_class()
 
             // You can also register a webhook here
             // add_action( 'woocommerce_api_{webhook name}', array( $this, 'webhook' ) );
+            $this->country = count($this->countries) > 0 ? $this->countries[0] : 'CM';
+            $this->countryCode = array(
+                'CM' => '237',
+                'NE' => '227'
+            );
         }
 
         public function init_form_fields()
@@ -157,6 +187,13 @@ function mesomb_init_gateway_class()
                 'application' => array(
                     'title' => __('MeSomb Application Key', 'mesomb-for-woocommerce'),
                     'type' => 'password'
+                ),
+                'countries' => array(
+                    'title' => __('Countries', 'mesomb-for-woocommerce'),
+                    'type' => 'multiselect',
+                    'default' => 'CM',
+                    'options' => $this->countriesList,
+                    'description' => __('You can receiver payment from which countries', 'mesomb-for-woocommerce'),
                 ),
                 'conversion' => array(
                     'title' => __('Currency Conversion', 'mesomb-for-woocommerce'),
@@ -213,53 +250,55 @@ function mesomb_init_gateway_class()
             do_action('woocommerce_credit_card_form_start', $this->id);
 
             // I recommend to use inique IDs, because other gateways could already use #ccNo, #expdate, #cvc
-            echo '<div class="form-row form-row-wide">
-                    <label>'.__('Phone Number', 'mesomb-for-woocommerce').' <span class="required">*</span></label>
+            if (count($this->countries) > 1) {
+                echo '<div class="form-row form-row-wide validate-required">
+                    <label class="field-label">'.__('Country', 'mesomb-for-woocommerce').' <span class="required">*</span></label>
+                    <div class="woocommerce-input-wrapper" id="countries-field">';
+                foreach ($this->countries as $country) {
+                    echo '<label>
+                        <input required id="mesomb-country-'.$country.'" type="radio" autocomplete="off" name="country" class="input-radio" value="'.$country.'" /> '.$this->countriesList[$country].'
+                    </label>';
+                }
+                echo '</div>
+                </div>';
+            }
+
+            echo '<div class="form-row form-row-wide validate-required">
+                    <label class="field-label">'.__('Operator', 'mesomb-for-woocommerce').' <span class="required">*</span></label>
+                    <div id="providers" style="display: flex; flex-direction: row; flex-wrap: wrap;">';
+            $provs = array_filter($this->providers, function($k, $v) {
+                return count(array_intersect($k['countries'], $this->countries)) > 0;
+            }, ARRAY_FILTER_USE_BOTH);
+            foreach ($provs as $provider) {
+                echo '<div class="form-row provider-row '.implode(' ', $provider['countries']).'" style="width: 47%; margin-right: 2%">
+                        <label class="kt-option">
+                            <span class="kt-option__label">
+                                <span class="kt-option__head">
+                                <span class="kt-option__control">
+                                <span class="kt-radio">
+                                    <input name="service" value="'.$provider['key'].'" type="radio" checked class="input-radio"/>
+                                    <span></span>
+                                </span>
+                            </span>
+                                    <span class="kt-option__title">'.$provider['name'].'</span>
+                                    <span class="kt-option__focus" style="position: relative; right: -10px; top: -10px;">
+                                        <img src="'.$provider['icon'].'" style="width: 25px; border-radius: 13px;"/>
+                                    </span>
+                                </span>
+                                <span class="kt-option__body">'.__('Pay with your', 'mesomb-for-woocommerce').' '.$provider['name'].'</span>
+                            </span>
+                        </label>
+                    </div>';
+            }
+            echo '</div></div>';
+            echo '<div class="form-row form-row-wide validate-required">
+                    <label class="field-label">'.__('Phone Number', 'mesomb-for-woocommerce').' <span class="required">*</span></label>
                     <div class="woocommerce-input-wrapper">
-                        <input id="mesomb-payer" type="tel" autocomplete="off" name="payer" placeholder="Expl: 670000000" class="input-text" />
+                        <input id="mesomb-payer" required type="tel" autocomplete="off" name="payer" placeholder="Expl: 670000000" class="input-text" />
                     </div>
-                  </div>
-                  <div class="form-row form-row-first validate-required">
-                    <label class="kt-option">
-                        <span class="kt-option__label">
-                            <span class="kt-option__head">
-                            <span class="kt-option__control">
-                            <span class="kt-radio">
-                                <input name="service" value="MTN" type="radio" checked class="input-radio"/>
-                                <span></span>
-                            </span>
-                        </span>
-                                <span class="kt-option__title">Mobile Money</span>
-                                <span class="kt-option__focus">
-                                    <img src="'.plugins_url('images/logo-momo.png', __FILE__).'" style="height: 25px; border-radius: 13px;"/>
-                                </span>
-                            </span>
-                            <span class="kt-option__body">'.__('Pay with your', 'mesomb-for-woocommerce').' Mobile Money</span>
-                        </span>
-                    </label>
-                  </div>
-                  <div class="form-row form-row-last validate-required">
-                  <label class="kt-option">
-                        <span class="kt-option__label">
-                            <span class="kt-option__head">
-                            <span class="kt-option__control">
-                            <span class="kt-radio">
-                                <input name="service" value="ORANGE" type="radio" class="input-radio"/>
-                                <span></span>
-                            </span>
-                        </span>
-                                <span class="kt-option__title">Orange Money</span>
-                                <span class="kt-option__focus">
-                                    <img src="'.plugins_url('images/logo-orange.jpg', __FILE__).'" style="height: 25px; border-radius: 13px;"/>
-                                </span>
-                            </span>
-                            <span class="kt-option__body">'.__('Pay with your', 'mesomb-for-woocommerce').' Orange Money</span>
-                        </span>
-                    </label>
-                  </div>
-                  <div class="clear" />
-                </div>
-                <div class="alert alert-success" role="alert" id="mesomb-alert" style="display: none">
+                </div>';
+
+            echo '<div class="alert alert-success" role="alert" id="mesomb-alert" style="display: none">
                   <h4 class="alert-heading">'.__('Check your phone', 'mesomb-for-woocommerce').'!</h4>
                   <p>'.__('Please check your phone to validate payment from Hachther SARL or MeSomb', 'mesomb-for-woocommerce').'</p>
                 </div>';
@@ -275,6 +314,10 @@ function mesomb_init_gateway_class()
                 wc_add_notice('<strong>Mobile/Orange Money Number</strong> is required', 'error');
                 return false;
             }
+            if (count($this->countries) > 1 && empty($_POST['country'])) {
+                wc_add_notice('<strong>Your must select a the country</strong>', 'error');
+                return false;
+            }
             return true;
 
         }
@@ -288,28 +331,29 @@ function mesomb_init_gateway_class()
             $locale = substr(get_locale(), 0, 2);
             $order = wc_get_order($order_id);
             $service = $_POST['service'];
+            $country = isset($_POST['country']) ? $_POST['country'] : $this->country;
             $payer = sanitize_text_field($_POST['payer']);
 
-            if (!in_array($service, ['ORANGE', 'MTN'])) {
-                wc_add_notice(__('Invalid operator it should be Mobile Money or Orange Money', 'mesomb-for-woocommerce'), 'error');
+            if (!in_array($service, ['ORANGE', 'MTN', 'AIRTEL'])) {
+                wc_add_notice(__('Invalid operator it should be on of the following Mobile Money, Orange Money and Airtel Money', 'mesomb-for-woocommerce'), 'error');
                 return;
             }
 
-            if (!preg_match("/^[4|6]\d{8}$/", $payer)) {
-                wc_add_notice(__('Your phone number format is invalid. It should be in the local format of MTN or Orange expl: 670000000', 'mesomb-for-woocommerce'), 'error');
+            if (!preg_match("/^\d{8,9}$/", $payer)) {
+                wc_add_notice(__('Your phone number format is invalid. It should be in the local format', 'mesomb-for-woocommerce'), 'error');
                 return;
             }
 
             $data = array(
                 'amount' => intval($order->get_total()),
-                'payer' => '237'.$payer,
+                'payer' => $this->countryCode[$country].$payer,
                 'service' => $service,
                 'fees' => $this->fees_included == 'yes' ? true : false,
                 'conversion' => $this->conversion == 'yes' ? true : false,
                 'currency' => $order->get_order_currency(),
                 'message' => $order->get_customer_note().' '.get_bloginfo('name'),
                 'reference' => $order->get_id(),
-                'country' => 'CM',
+                'country' => $country,
                 'customer' => array(
                     'first_name' => $order->get_billing_first_name(),
                     'last_name' => $order->get_billing_last_name(),
@@ -322,12 +366,14 @@ function mesomb_init_gateway_class()
                     'postcode' => $order->get_billing_postcode(),
                 )
             );
+            print_r($data);
+            exit(0);
 
             /*
              * Your API interaction could be built with wp_remote_post()
              */
             $url = 'https://mesomb.hachther.com/api/v1.0/payment/online/';
-            $url = 'http://127.0.0.1:8000/api/v1.0/payment/online/';
+            // $url = 'http://127.0.0.1:8000/api/v1.0/payment/online/';
             $response = wp_remote_post($url, array(
                 'body' => json_encode($data),
                 'headers' => array(
