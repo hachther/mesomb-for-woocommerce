@@ -165,7 +165,8 @@ function mesomb_init_gateway_class()
 
             // gateways can support subscriptions, refunds, saved payment methods,
             $this->supports = array(
-                'products'
+                'products',
+                'refunds',
             );
             $this->countriesList = array(
                 'CM' => __('Cameroon', 'mesomb-for-woocommerce'),
@@ -222,6 +223,13 @@ function mesomb_init_gateway_class()
                 'CM' => '237',
                 'NE' => '227'
             );
+        }
+
+        private function get_authorization($method, $url, $date, $nonce, array $headers = [], array $body = null)
+        {
+            $credentials = ['accessKey' => $this->accessKey, 'secretKey' => $this->secretKey];
+
+            return Signature::signRequest('payment', $method, $url, $date, $nonce, $credentials, $headers, $body);
         }
 
         public function init_form_fields()
@@ -406,7 +414,7 @@ function mesomb_init_gateway_class()
             global $woocommerce;
 
 
-            // we need it to get any order detailes
+            // we need it to get any order details
             $locale = substr(get_bloginfo('language'), 0, 2);
             $order = wc_get_order($order_id);
             $service = $_POST['service'];
@@ -429,7 +437,7 @@ function mesomb_init_gateway_class()
                 'service' => $service,
                 'fees' => $this->fees_included == 'yes',
                 'conversion' => $this->conversion == 'yes',
-                'currency' => $order->get_order_currency(),
+                'currency' => $order->get_currency(),
                 'message' => $order->get_customer_note().' '.get_bloginfo('name'),
                 'reference' => $order->get_id(),
                 'country' => $country,
@@ -450,13 +458,12 @@ function mesomb_init_gateway_class()
             /*
              * Your API interaction could be built with wp_remote_post()
              */
-            $url = 'https://mesomb.hachther.com/$lang/api/v1.1/payment/collect/';
-//             $url = "http://127.0.0.1:8000/$lang/api/v1.1/payment/collect/";
+//            $url = 'https://mesomb.hachther.com/$lang/api/v1.1/payment/collect/';
+            $url = "http://127.0.0.1:8000/$lang/api/v1.1/payment/collect/";
 
             $nonce = Signature::nonceGenerator();
             $date = new DateTime();
-            $credentials = ['accessKey' => $this->accessKey, 'secretKey' => $this->secretKey];
-            $authorization = Signature::signRequest('payment', 'POST', $url, $date, $nonce, $credentials, ['content-type' => 'application/json'], $data);
+            $authorization = $this->get_authorization('POST', $url, $date, $nonce, ['content-type' => 'application/json'], $data);
             $response = wp_remote_post($url, array(
                 'body' => json_encode($data),
                 'headers' => array(
@@ -475,7 +482,7 @@ function mesomb_init_gateway_class()
                 // it could be different depending on your payment processor
                 if ($body['status'] == 'SUCCESS') {
                     // we received the payment
-                    $order->payment_complete();
+                    $order->payment_complete($body['transaction']['pk']);
                     wc_reduce_stock_levels($order_id);
 //                    $order->reduce_order_stock();
 
@@ -496,6 +503,56 @@ function mesomb_init_gateway_class()
             } else {
                 wc_add_notice(__("Error during the payment process!\nPlease try again and contact the admin if the issue is continue", 'mesomb-for-woocommerce'), 'error');
                 return;
+            }
+        }
+
+        public function process_refund( $order_id, $amount = null, $reason = '' ) {
+            // Do your refund here. Refund $amount for the order with ID $order_id
+            $order = wc_get_order($order_id);
+            $locale = substr(get_bloginfo('language'), 0, 2);
+
+            $data = array(
+                'id' => $order->get_transaction_id(),
+                'conversion' => $this->conversion == 'yes',
+                'currency' => $order->get_currency(),
+            );
+            if ($amount != null) {
+                $data['amount'] = $amount;
+            }
+            $lang = $locale == 'fr' ? 'fr' : 'en';
+
+            /*
+             * Your API interaction could be built with wp_remote_post()
+             */
+//            $url = 'https://mesomb.hachther.com/$lang/api/v1.1/payment/refund/';
+            $url = "http://127.0.0.1:8000/$lang/api/v1.1/payment/refund/";
+
+            $nonce = Signature::nonceGenerator();
+            $date = new DateTime();
+            $authorization = $this->get_authorization('POST', $url, $date, $nonce, ['content-type' => 'application/json'], $data);
+            $response = wp_remote_post($url, array(
+                'body' => json_encode($data),
+                'headers' => array(
+                    'Accept-Language' => $locale,
+                    'x-mesomb-date' => $date->getTimestamp(),
+                    'x-mesomb-nonce' => $nonce,
+                    'Authorization' => $authorization,
+                    'Content-Type'     => 'application/json',
+                    'X-MeSomb-Application' => $this->application,
+                )
+            ));
+
+            $body = json_decode($response['body'], true);
+
+            if (!is_wp_error($response)) {
+                // it could be different depending on your payment processor
+                if ($body['status'] == 'SUCCESS') {
+                    return true;
+                } else {
+                    return new WP_Error('error', isset($body['detail']) ? $body['detail'] : $body['message']);
+                }
+            } else {
+                return new WP_Error($body['code'], isset($body['detail']) ? $body['detail'] : __("Error during the payment process!\nPlease try again and contact the admin if the issue is continue", 'mesomb-for-woocommerce'));
             }
         }
     }
