@@ -468,22 +468,35 @@ function mesomb_init_gateway_class()
             /*
              * Your API interaction could be built with wp_remote_post()
              */
-            $url = 'https://mesomb.hachther.com/$lang/api/v1.1/payment/collect/';
-//            $url = "http://127.0.0.1:8000/$lang/api/v1.1/payment/collect/";
+            $version = empty($this->accessKey) ? 'v1.0' : 'v1.1';
+            $endpoint = empty($this->accessKey) ? 'online/' : 'collect/';
+            if (empty($this->accessKey)) {
+                $url = "https://mesomb.hachther.com/api/$version/payment/$endpoint";
+            } else {
+//                $url = "http://127.0.0.1:8000/$lang/api/$version/payment/$endpoint";
+                $url = "https://mesomb.hachther.com/$lang/api/$version/payment/$endpoint";
+            }
 
-            $nonce = Signature::nonceGenerator();
-            $date = new DateTime();
-            $authorization = $this->get_authorization('POST', $url, $date, $nonce, ['content-type' => 'application/json'], $data);
+            $headers = array(
+                'Accept-Language' => $locale,
+                'Content-Type'     => 'application/json',
+                'X-MeSomb-Application' => $this->application,
+            );
+
+            if (!empty($this->accessKey)) {
+                $nonce = Signature::nonceGenerator();
+                $date = new DateTime();
+                $authorization = $this->get_authorization('POST', $url, $date, $nonce, ['content-type' => 'application/json'], $data);
+
+                $headers['x-mesomb-date'] = $date->getTimestamp();
+                $headers['x-mesomb-nonce'] = $nonce;
+                $headers['Authorization'] = $authorization;
+            }
+
+
             $response = wp_remote_post($url, array(
                 'body' => json_encode($data),
-                'headers' => array(
-                    'Accept-Language' => $locale,
-                    'x-mesomb-date' => $date->getTimestamp(),
-                    'x-mesomb-nonce' => $nonce,
-                    'Authorization' => $authorization,
-                    'Content-Type'     => 'application/json',
-                    'X-MeSomb-Application' => $this->application,
-                )
+                'headers' => $headers
             ));
 
             if (!is_wp_error($response)) {
@@ -534,8 +547,8 @@ function mesomb_init_gateway_class()
             /*
              * Your API interaction could be built with wp_remote_post()
              */
-            $url = 'https://mesomb.hachther.com/$lang/api/v1.1/payment/refund/';
 //            $url = "http://127.0.0.1:8000/$lang/api/v1.1/payment/refund/";
+            $url = "https://mesomb.hachther.com/$lang/api/v1.1/payment/refund/";
 
             $nonce = Signature::nonceGenerator();
             $date = new DateTime();
