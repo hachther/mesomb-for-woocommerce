@@ -78,7 +78,6 @@ function mesomb_timeout_extend($time)
 //    return $transaction[$locale][$key];
 //}
 
-
 add_action('plugins_loaded', 'mesomb_init_gateway_class');
 function mesomb_init_gateway_class()
 {
@@ -346,7 +345,7 @@ function mesomb_init_gateway_class()
 
             $data = array(
                 'amount' => intval($order->get_total()),
-                'payer' => $this->countryCode[$country].$payer,
+                'payer' => $payer,
                 'service' => $service,
                 'fees' => $this->fees_included == 'yes' ? true : false,
                 'conversion' => $this->conversion == 'yes' ? true : false,
@@ -366,8 +365,6 @@ function mesomb_init_gateway_class()
                     'postcode' => $order->get_billing_postcode(),
                 )
             );
-            print_r($data);
-            exit(0);
 
             /*
              * Your API interaction could be built with wp_remote_post()
