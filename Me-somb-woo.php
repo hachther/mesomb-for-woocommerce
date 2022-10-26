@@ -417,6 +417,15 @@ function mesomb_init_gateway_class()
             // we need it to get any order details
             $locale = substr(get_bloginfo('language'), 0, 2);
             $order = wc_get_order($order_id);
+            $products = [];
+            foreach ($order->get_items() as $item) {
+                $products[] = [
+                    'id' => $item->get_product_id(),
+                    'name' => $item->get_name(),
+                    'quantity' => $item->get_quantity(),
+                    'amount' => $item->get_total()
+                ];
+            }
             $service = $_POST['service'];
             $country = isset($_POST['country']) ? $_POST['country'] : $this->country;
             $payer = sanitize_text_field($_POST['payer']);
@@ -451,15 +460,16 @@ function mesomb_init_gateway_class()
                     'phone' => $order->get_billing_phone(),
                     'address_1' => $order->get_billing_address_1(),
                     'postcode' => $order->get_billing_postcode(),
-                )
+                ),
+                'products' => $products
             );
             $lang = $locale == 'fr' ? 'fr' : 'en';
 
             /*
              * Your API interaction could be built with wp_remote_post()
              */
-//            $url = 'https://mesomb.hachther.com/$lang/api/v1.1/payment/collect/';
-            $url = "http://127.0.0.1:8000/$lang/api/v1.1/payment/collect/";
+            $url = 'https://mesomb.hachther.com/$lang/api/v1.1/payment/collect/';
+//            $url = "http://127.0.0.1:8000/$lang/api/v1.1/payment/collect/";
 
             $nonce = Signature::nonceGenerator();
             $date = new DateTime();
@@ -524,8 +534,8 @@ function mesomb_init_gateway_class()
             /*
              * Your API interaction could be built with wp_remote_post()
              */
-//            $url = 'https://mesomb.hachther.com/$lang/api/v1.1/payment/refund/';
-            $url = "http://127.0.0.1:8000/$lang/api/v1.1/payment/refund/";
+            $url = 'https://mesomb.hachther.com/$lang/api/v1.1/payment/refund/';
+//            $url = "http://127.0.0.1:8000/$lang/api/v1.1/payment/refund/";
 
             $nonce = Signature::nonceGenerator();
             $date = new DateTime();
