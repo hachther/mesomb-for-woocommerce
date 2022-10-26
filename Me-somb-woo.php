@@ -4,8 +4,8 @@
 Plugin Name: MeSomb for WooCommerce
 Plugin URI: https://mesomb.hachther.com
 Description: Plugin to integrate Mobile payment on WooCommerce using Hachther MeSomb
-Version: 1.1.2
-Author: Hachther LLC
+Version: 1.2.0
+Author: Hachther LLC <contact@hachther.com>
 Author URI: https://hachther.com
 Text Domain: mesomb-for-woocommerce
 Domain Path: /languages
@@ -78,6 +78,77 @@ function mesomb_timeout_extend($time)
 //    return $transaction[$locale][$key];
 //}
 
+class Signature
+{
+    /**
+     * @param string $service service to use can be payment, wallet ... (the list is provide by MeSomb)
+     * @param string $method HTTP method (GET, POST, PUT, PATCH, DELETE...)
+     * @param string $url the full url of the request with query element https://mesomb.hachther.com/path/to/ressource?highlight=params#url-parsing
+     * @param \DateTime $date Datetime of the request
+     * @param string $nonce Unique string generated for each request sent to MeSomb
+     * @param array $credentials dict containing key => value for the credential provided by MeSOmb. {'access' => access_key, 'secret' => secret_key}
+     * @param array $headers Extra HTTP header to use in the signature
+     * @param array|null $body The dict containing the body you send in your request body
+     * @return string Authorization to put in the header
+     */
+    public static function signRequest($service, $method, $url, $date, $nonce, $credentials, $headers = [], $body = null)
+    {
+        $algorithm = 'HMAC-SHA1';
+        $parse = parse_url($url);
+        $canonicalQuery = isset($parse['query']) ? $parse['query'] : '';
+
+        $timestamp = $date->getTimestamp();
+
+        if (!isset($headers)) {
+            $headers = [];
+        }
+        $headers['host'] = $parse['scheme']."://".$parse['host'].(isset($parse['port']) ? ":".$parse['port'] : '');
+        $headers['x-mesomb-date'] = $timestamp;
+        $headers['x-mesomb-nonce'] = $nonce;
+        ksort($headers);
+        $callback = function ($k, $v) {
+            return strtolower($k) . ":" . $v;
+        };
+        $canonicalHeaders = implode("\n", array_map($callback, array_keys($headers), array_values($headers)));
+
+        if (!isset($body)) {
+            $body = "{}";
+        } else {
+            $body = json_encode($body, JSON_UNESCAPED_SLASHES);
+        }
+        $payloadHash = sha1($body);
+
+        $signedHeaders = implode(";", array_keys($headers));
+
+        $path = implode("/", array_map("rawurlencode", explode("/", $parse['path'])));
+        $canonicalRequest = $method."\n".$path."\n".$canonicalQuery."\n".$canonicalHeaders."\n".$signedHeaders."\n".$payloadHash;
+
+        $scope = $date->format("Ymd")."/".$service."/mesomb_request";
+        $stringToSign = $algorithm."\n".$timestamp."\n".$scope."\n".sha1($canonicalRequest);
+
+        $signature = hash_hmac('sha1', $stringToSign, $credentials['secretKey'], false);
+        $accessKey = $credentials['accessKey'];
+
+        return "$algorithm Credential=$accessKey/$scope, SignedHeaders=$signedHeaders, Signature=$signature";
+    }
+
+    /**
+     * Generate a random string by the length
+     *
+     * @param int $length
+     * @return string
+     */
+    public static function nonceGenerator($length = 40) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+}
+
 add_action('plugins_loaded', 'mesomb_init_gateway_class');
 function mesomb_init_gateway_class()
 {
@@ -86,9 +157,8 @@ function mesomb_init_gateway_class()
 
         public function __construct()
         {
-            $locale = substr(get_locale(), 0, 2);
             $this->id = 'mesomb';
-            $this->icon = plugins_url($locale == 'en' ? 'images/logo-long-en.png' : 'images/logo-long-fr.png', __FILE__); // URL of the icon that will be displayed on checkout page near your gateway name
+            $this->icon = plugins_url('images/logo-long.png', __FILE__); // URL of the icon that will be displayed on checkout page near your gateway name
             $this->has_fields = true;
             $this->method_title = 'MeSomb Gateway';
             $this->method_description = __('Allow user to make payment with Mobile Money or Orange Money', 'mesomb-for-woocommerce'); // will be displayed on the options page
@@ -132,6 +202,8 @@ function mesomb_init_gateway_class()
             $this->enabled = $this->get_option('enabled');
             $this->testmode = 'yes' === $this->get_option('testmode');
             $this->application = $this->get_option('application');
+            $this->accessKey = $this->get_option('accessKey');
+            $this->secretKey = $this->get_option('secretKey');
             $this->countries = $this->get_option('countries');
             $this->account = $this->get_option('account');
             $this->fees_included = $this->get_option('fees_included');
@@ -187,6 +259,16 @@ function mesomb_init_gateway_class()
                     'title' => __('MeSomb Application Key', 'mesomb-for-woocommerce'),
                     'type' => 'password'
                 ),
+                'accessKey' => array(
+                    'title' => __('MeSomb Access Key', 'mesomb-for-woocommerce'),
+                    'type' => 'password',
+                    'description' => __('API Access key obtained from MeSomb', 'mesomb-for-woocommerce'),
+                ),
+                'secretKey' => array(
+                    'title' => __('MeSomb Secret Key', 'mesomb-for-woocommerce'),
+                    'type' => 'password',
+                    'description' => __('API Secret key obtained from MeSomb', 'mesomb-for-woocommerce'),
+                ),
                 'countries' => array(
                     'title' => __('Countries', 'mesomb-for-woocommerce'),
                     'type' => 'multiselect',
@@ -235,8 +317,6 @@ function mesomb_init_gateway_class()
 
         public function payment_fields()
         {
-            $locale = substr(get_locale(), 0, 2);
-
             // ok, let's display some description before the payment form
             if ($this->description) {
                 echo wpautop(wp_kses_post($this->description));
@@ -327,7 +407,7 @@ function mesomb_init_gateway_class()
 
 
             // we need it to get any order detailes
-            $locale = substr(get_locale(), 0, 2);
+            $locale = substr(get_bloginfo('language'), 0, 2);
             $order = wc_get_order($order_id);
             $service = $_POST['service'];
             $country = isset($_POST['country']) ? $_POST['country'] : $this->country;
@@ -347,8 +427,8 @@ function mesomb_init_gateway_class()
                 'amount' => intval($order->get_total()),
                 'payer' => $payer,
                 'service' => $service,
-                'fees' => $this->fees_included == 'yes' ? true : false,
-                'conversion' => $this->conversion == 'yes' ? true : false,
+                'fees' => $this->fees_included == 'yes',
+                'conversion' => $this->conversion == 'yes',
                 'currency' => $order->get_order_currency(),
                 'message' => $order->get_customer_note().' '.get_bloginfo('name'),
                 'reference' => $order->get_id(),
@@ -365,18 +445,27 @@ function mesomb_init_gateway_class()
                     'postcode' => $order->get_billing_postcode(),
                 )
             );
+            $lang = $locale == 'fr' ? 'fr' : 'en';
 
             /*
              * Your API interaction could be built with wp_remote_post()
              */
-            $url = 'https://mesomb.hachther.com/api/v1.0/payment/online/';
-            // $url = 'http://127.0.0.1:8000/api/v1.0/payment/online/';
+            $url = 'https://mesomb.hachther.com/$lang/api/v1.1/payment/collect/';
+//             $url = "http://127.0.0.1:8000/$lang/api/v1.1/payment/collect/";
+
+            $nonce = Signature::nonceGenerator();
+            $date = new DateTime();
+            $credentials = ['accessKey' => $this->accessKey, 'secretKey' => $this->secretKey];
+            $authorization = Signature::signRequest('payment', 'POST', $url, $date, $nonce, $credentials, ['content-type' => 'application/json'], $data);
             $response = wp_remote_post($url, array(
                 'body' => json_encode($data),
                 'headers' => array(
+                    'Accept-Language' => $locale,
+                    'x-mesomb-date' => $date->getTimestamp(),
+                    'x-mesomb-nonce' => $nonce,
+                    'Authorization' => $authorization,
+                    'Content-Type'     => 'application/json',
                     'X-MeSomb-Application' => $this->application,
-                    'Content-Type' => 'application/json',
-                    'Accept-Language' => $locale
                 )
             ));
 
@@ -402,8 +491,7 @@ function mesomb_init_gateway_class()
                         'redirect' => $this->get_return_url($order)
                     );
                 } else {
-                    wc_add_notice($body['message'], 'error');
-                    return;
+                    wc_add_notice(isset($body['detail']) ? $body['detail'] : $body['message'], 'error');
                 }
             } else {
                 wc_add_notice(__("Error during the payment process!\nPlease try again and contact the admin if the issue is continue", 'mesomb-for-woocommerce'), 'error');
