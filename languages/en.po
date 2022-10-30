@@ -1,24 +1,24 @@
-# Copyright (C) 2022 Hachther LLC
+# Copyright (C) 2022 Hachther LLC <contact@hachther.com>
 # This file is distributed under the same license as the MeSomb for WooCommerce plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: MeSomb for WooCommerce 1.1.2\n"
+"Project-Id-Version: MeSomb for WooCommerce 1.2.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/MeSombWoo\n"
+"POT-Creation-Date: 2022-10-30T11:43:29+00:00\n"
+"PO-Revision-Date: 2022-10-30 12:46+0100\n"
+"Last-Translator: \n"
 "Language-Team: \n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-03-15T15:32:06+00:00\n"
-"PO-Revision-Date: 2022-03-15 16:41+0100\n"
-"X-Generator: Poedit 2.4.1\n"
-"X-Domain: mesomb-for-woocommerce\n"
-"Last-Translator: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: en\n"
+"X-Generator: Poedit 3.1\n"
+"X-Domain: mesomb-for-woocommerce\n"
 
 #. Plugin Name of the plugin
 msgid "MeSomb for WooCommerce"
-msgstr "MeSomb for WooCommerce"
+msgstr "MeSomb pour WooCommerce"
 
 #. Plugin URI of the plugin
 msgid "https://mesomb.hachther.com"
@@ -27,15 +27,16 @@ msgstr "https://mesomb.hachther.com"
 #. Description of the plugin
 msgid "Plugin to integrate Mobile payment on WooCommerce using Hachther MeSomb"
 msgstr ""
-"Plugin to integrate Mobile payment on WooCommerce using Hachther MeSomb"
+"Plugin pour intégrer le paiement mobile sur WooCommerce en utilisant "
+"Hachther MeSomb"
 
 #. Author of the plugin
 msgid "Hachther LLC"
-msgstr "Hachther LLC"
+msgstr "Hachther SARL"
 
 #. Author URI of the plugin
 msgid "https://hachther.com"
-msgstr "https://hachther.com"
+msgstr "https://hachther.com/fr"
 
 #: Me-somb-woo.php:95 .history/Me-somb-woo_20220308145639.php:95
 #: .history/Me-somb-woo_20220312165026.php:95
@@ -145,9 +146,11 @@ msgstr "https://hachther.com"
 #: .history/Me-somb-woo_20220315162435.php:95
 #: .history/Me-somb-woo_20220315163011.php:95
 #: .history/Me-somb-woo_20220315163013.php:95
-#: .history/Me-somb-woo_20220315163123.php:95
+#: .history/Me-somb-woo_20220315163123.php:95 Me-somb-woo.php:164
 msgid "Allow user to make payment with Mobile Money or Orange Money"
-msgstr "Allow user to make payment with Mobile Money or Orange Money"
+msgstr ""
+"Permettre à l’utilisateur d’effectuer un paiement avec Mobile Money ou "
+"Mobile Money"
 
 #: Me-somb-woo.php:130 .history/Me-somb-woo_20220308145639.php:130
 #: .history/Me-somb-woo_20220312165026.php:130
@@ -258,8 +261,9 @@ msgstr "Allow user to make payment with Mobile Money or Orange Money"
 #: .history/Me-somb-woo_20220315163011.php:160
 #: .history/Me-somb-woo_20220315163013.php:160
 #: .history/Me-somb-woo_20220315163123.php:160 Me-somb-woo.php:160
+#: Me-somb-woo.php:239
 msgid "Enable/Disable"
-msgstr "Enable/Disable"
+msgstr "Activer/Désactiver"
 
 #: Me-somb-woo.php:131 .history/Me-somb-woo_20220308145639.php:131
 #: .history/Me-somb-woo_20220312165026.php:131
@@ -370,8 +374,9 @@ msgstr "Enable/Disable"
 #: .history/Me-somb-woo_20220315163011.php:161
 #: .history/Me-somb-woo_20220315163013.php:161
 #: .history/Me-somb-woo_20220315163123.php:161 Me-somb-woo.php:161
+#: Me-somb-woo.php:240
 msgid "Enable MeSomb Gateway"
-msgstr "Enable MeSomb Gateway"
+msgstr "Activer la Passerelle MeSomb"
 
 #: Me-somb-woo.php:137 .history/Me-somb-woo_20220308145639.php:137
 #: .history/Me-somb-woo_20220312165026.php:137
@@ -482,8 +487,9 @@ msgstr "Enable MeSomb Gateway"
 #: .history/Me-somb-woo_20220315163011.php:167
 #: .history/Me-somb-woo_20220315163013.php:167
 #: .history/Me-somb-woo_20220315163123.php:167 Me-somb-woo.php:167
+#: Me-somb-woo.php:246
 msgid "Title"
-msgstr "Title"
+msgstr "Titre"
 
 #: Me-somb-woo.php:139 .history/Me-somb-woo_20220308145639.php:139
 #: .history/Me-somb-woo_20220312165026.php:139
@@ -594,8 +600,9 @@ msgstr "Title"
 #: .history/Me-somb-woo_20220315163011.php:169
 #: .history/Me-somb-woo_20220315163013.php:169
 #: .history/Me-somb-woo_20220315163123.php:169 Me-somb-woo.php:169
+#: Me-somb-woo.php:248
 msgid "This controls the title which the user sees during checkout."
-msgstr "This controls the title which the user sees during checkout."
+msgstr "Ceci contrôle le titre que l’utilisateur voit lors du paiement."
 
 #: Me-somb-woo.php:140 .history/Me-somb-woo_20220308145639.php:140
 #: .history/Me-somb-woo_20220312165026.php:140
@@ -706,8 +713,9 @@ msgstr "This controls the title which the user sees during checkout."
 #: .history/Me-somb-woo_20220315163011.php:170
 #: .history/Me-somb-woo_20220315163013.php:170
 #: .history/Me-somb-woo_20220315163123.php:170 Me-somb-woo.php:170
+#: Me-somb-woo.php:249
 msgid "MeSomb Mobile Payment"
-msgstr "Mobile Payment"
+msgstr "Paiement Mobile"
 
 #: Me-somb-woo.php:144 .history/Me-somb-woo_20220308145639.php:144
 #: .history/Me-somb-woo_20220312165026.php:144
@@ -818,6 +826,7 @@ msgstr "Mobile Payment"
 #: .history/Me-somb-woo_20220315163011.php:174
 #: .history/Me-somb-woo_20220315163013.php:174
 #: .history/Me-somb-woo_20220315163123.php:174 Me-somb-woo.php:174
+#: Me-somb-woo.php:253
 msgid "Description"
 msgstr "Description"
 
@@ -930,8 +939,9 @@ msgstr "Description"
 #: .history/Me-somb-woo_20220315163011.php:176
 #: .history/Me-somb-woo_20220315163013.php:176
 #: .history/Me-somb-woo_20220315163123.php:176 Me-somb-woo.php:176
+#: Me-somb-woo.php:255
 msgid "This controls the description which the user sees during checkout."
-msgstr "This controls the description which the user sees during checkout."
+msgstr "Ceci contrôle la description que l’utilisateur voit lors du paiement."
 
 #: Me-somb-woo.php:147 .history/Me-somb-woo_20220308145639.php:147
 #: .history/Me-somb-woo_20220312165026.php:147
@@ -1042,8 +1052,9 @@ msgstr "This controls the description which the user sees during checkout."
 #: .history/Me-somb-woo_20220315163011.php:177
 #: .history/Me-somb-woo_20220315163013.php:177
 #: .history/Me-somb-woo_20220315163123.php:177 Me-somb-woo.php:177
+#: Me-somb-woo.php:256
 msgid "Pay with your Mobile/Orange Money account."
-msgstr "Pay with your Mobile/Orange Money account."
+msgstr "Payez avec votre compte Mobile/Orange Money."
 
 #: Me-somb-woo.php:150 .history/Me-somb-woo_20220308145639.php:150
 #: .history/Me-somb-woo_20220312165026.php:150
@@ -1154,8 +1165,9 @@ msgstr "Pay with your Mobile/Orange Money account."
 #: .history/Me-somb-woo_20220315163011.php:180
 #: .history/Me-somb-woo_20220315163013.php:180
 #: .history/Me-somb-woo_20220315163123.php:180 Me-somb-woo.php:180
+#: Me-somb-woo.php:259
 msgid "Fees Included"
-msgstr "Fees Included"
+msgstr "Frais inclus"
 
 #: Me-somb-woo.php:151 .history/Me-somb-woo_20220308145639.php:151
 #: .history/Me-somb-woo_20220312165026.php:151
@@ -1266,8 +1278,9 @@ msgstr "Fees Included"
 #: .history/Me-somb-woo_20220315163011.php:181
 #: .history/Me-somb-woo_20220315163013.php:181
 #: .history/Me-somb-woo_20220315163123.php:181 Me-somb-woo.php:181
+#: Me-somb-woo.php:260
 msgid "Fees are already included in the displayed price"
-msgstr "Fees are already included in the displayed price"
+msgstr "Les frais sont déjà inclus dans le prix affiché"
 
 #: Me-somb-woo.php:153 .history/Me-somb-woo_20220308145639.php:153
 #: .history/Me-somb-woo_20220312165026.php:153
@@ -1378,12 +1391,13 @@ msgstr "Fees are already included in the displayed price"
 #: .history/Me-somb-woo_20220315163011.php:183
 #: .history/Me-somb-woo_20220315163013.php:183
 #: .history/Me-somb-woo_20220315163123.php:183 Me-somb-woo.php:183
+#: Me-somb-woo.php:262
 msgid ""
 "This control if the MeSomb fees is already included in the price shown to "
 "users"
 msgstr ""
-"This control if the MeSomb fees is already included in the price shown to "
-"users"
+"Ceci contrôle si les frais MeSomb sont déjà inclus dans le prix affiché aux "
+"utilisateurs"
 
 #: Me-somb-woo.php:158 .history/Me-somb-woo_20220308145639.php:158
 #: .history/Me-somb-woo_20220312165026.php:158
@@ -1494,8 +1508,9 @@ msgstr ""
 #: .history/Me-somb-woo_20220315163011.php:188
 #: .history/Me-somb-woo_20220315163013.php:188
 #: .history/Me-somb-woo_20220315163123.php:188 Me-somb-woo.php:188
+#: Me-somb-woo.php:267
 msgid "MeSomb Application Key"
-msgstr "MeSomb Application Key"
+msgstr "Clé d’Application MeSomb"
 
 #: Me-somb-woo.php:162 .history/Me-somb-woo_20220308145639.php:162
 #: .history/Me-somb-woo_20220312165026.php:171
@@ -1606,8 +1621,9 @@ msgstr "MeSomb Application Key"
 #: .history/Me-somb-woo_20220315163011.php:199
 #: .history/Me-somb-woo_20220315163013.php:199
 #: .history/Me-somb-woo_20220315163123.php:199 Me-somb-woo.php:199
+#: Me-somb-woo.php:288
 msgid "Currency Conversion"
-msgstr "Currency Conversion"
+msgstr "Conversion de Devises"
 
 #: Me-somb-woo.php:163 .history/Me-somb-woo_20220308145639.php:163
 #: .history/Me-somb-woo_20220312165026.php:172
@@ -1718,8 +1734,11 @@ msgstr "Currency Conversion"
 #: .history/Me-somb-woo_20220315163011.php:200
 #: .history/Me-somb-woo_20220315163013.php:200
 #: .history/Me-somb-woo_20220315163123.php:200 Me-somb-woo.php:200
+#: Me-somb-woo.php:289
 msgid "Rely on MeSomb to automatically convert foreign currencies"
-msgstr "Rely on MeSomb to automatically convert foreign currencies"
+msgstr ""
+"Faire confiance à MeSomb pour convertir automatiquement les devises "
+"étrangères"
 
 #: Me-somb-woo.php:217 .history/Me-somb-woo_20220308145639.php:217
 #: .history/Me-somb-woo_20220312165026.php:226
@@ -1830,8 +1849,9 @@ msgstr "Rely on MeSomb to automatically convert foreign currencies"
 #: .history/Me-somb-woo_20220315163011.php:295
 #: .history/Me-somb-woo_20220315163013.php:295
 #: .history/Me-somb-woo_20220315163123.php:295 Me-somb-woo.php:295
+#: Me-somb-woo.php:382
 msgid "Phone Number"
-msgstr "Phone Number"
+msgstr "Numéro de Téléphone"
 
 #: Me-somb-woo.php:237 Me-somb-woo.php:256
 #: .history/Me-somb-woo_20220308145639.php:237
@@ -2055,8 +2075,9 @@ msgstr "Phone Number"
 #: .history/Me-somb-woo_20220315163011.php:288
 #: .history/Me-somb-woo_20220315163013.php:288
 #: .history/Me-somb-woo_20220315163123.php:288 Me-somb-woo.php:288
+#: Me-somb-woo.php:375
 msgid "Pay with your"
-msgstr "Pay with your"
+msgstr "Payez avec"
 
 #: Me-somb-woo.php:263 .history/Me-somb-woo_20220308145639.php:263
 #: .history/Me-somb-woo_20220312165026.php:272
@@ -2167,8 +2188,9 @@ msgstr "Pay with your"
 #: .history/Me-somb-woo_20220315163011.php:302
 #: .history/Me-somb-woo_20220315163013.php:302
 #: .history/Me-somb-woo_20220315163123.php:302 Me-somb-woo.php:302
+#: Me-somb-woo.php:389
 msgid "Check your phone"
-msgstr "Check your phone"
+msgstr "Regardez votre Téléphone"
 
 #: Me-somb-woo.php:264 .history/Me-somb-woo_20220308145639.php:264
 #: .history/Me-somb-woo_20220312165026.php:273
@@ -2279,10 +2301,12 @@ msgstr "Check your phone"
 #: .history/Me-somb-woo_20220315163011.php:303
 #: .history/Me-somb-woo_20220315163013.php:303
 #: .history/Me-somb-woo_20220315163123.php:303 Me-somb-woo.php:303
+#: Me-somb-woo.php:390
 msgid ""
 "Please check your phone to validate payment from Hachther SARL or MeSomb"
 msgstr ""
-"Please check your phone to validate payment from Hachther SARL or MeSomb"
+"Veuillez vérifier votre téléphone pour valider le paiement de Hachther SARL "
+"ou MeSomb"
 
 #: Me-somb-woo.php:294 .history/Me-somb-woo_20220308145639.php:294
 #: .history/Me-somb-woo_20220312165026.php:303
@@ -2385,7 +2409,7 @@ msgstr ""
 #: .history/Me-somb-woo_20220315160210.php:332
 #: .history/Me-somb-woo_20220315161323.php:333
 msgid "Invalid operator it should be Mobile Money or Orange Money"
-msgstr "Invalid operator it should be Mobile Money or Orange Money"
+msgstr "Opérateur non valide, cela devrait être Mobile Money ou Orange Money"
 
 #: Me-somb-woo.php:299 .history/Me-somb-woo_20220308145639.php:299
 #: .history/Me-somb-woo_20220312165026.php:308
@@ -2496,8 +2520,8 @@ msgid ""
 "Your phone number format is invalid. It should be in the local format of MTN "
 "or Orange expl: 670000000"
 msgstr ""
-"Your phone number format is invalid. It should be in the local format of MTN "
-"or Orange expl: 670000000"
+"Le format de votre numéro de téléphone n’est pas valide. Il doit être au "
+"format local MTN ou Orange expl: 670000000"
 
 #: Me-somb-woo.php:351 .history/Me-somb-woo_20220308145639.php:351
 #: .history/Me-somb-woo_20220312165026.php:360
@@ -2608,8 +2632,9 @@ msgstr ""
 #: .history/Me-somb-woo_20220315163011.php:397
 #: .history/Me-somb-woo_20220315163013.php:397
 #: .history/Me-somb-woo_20220315163123.php:397 Me-somb-woo.php:397
+#: Me-somb-woo.php:514
 msgid "Hey, your order is paid! Thank you!"
-msgstr "Hey, your order is paid! Thank you!"
+msgstr "Hé, votre commande est payée! Merci!"
 
 #: Me-somb-woo.php:366 .history/Me-somb-woo_20220308145639.php:366
 #: .history/Me-somb-woo_20220312165026.php:375
@@ -2720,12 +2745,13 @@ msgstr "Hey, your order is paid! Thank you!"
 #: .history/Me-somb-woo_20220315163011.php:412
 #: .history/Me-somb-woo_20220315163013.php:412
 #: .history/Me-somb-woo_20220315163123.php:412 Me-somb-woo.php:412
+#: Me-somb-woo.php:528 Me-somb-woo.php:579
 msgid ""
 "Error during the payment process!\n"
 "Please try again and contact the admin if the issue is continue"
 msgstr ""
-"Error during the payment process!\n"
-"Please try again and contact the admin if the issue is continue"
+"Erreur lors du processus de paiement!\n"
+"Veuillez réessayer et contacter l’administrateur si le problème persiste"
 
 #: .history/Me-somb-woo_20220312165026.php:162
 #: .history/Me-somb-woo_20220312165110.php:162
@@ -2835,8 +2861,9 @@ msgstr ""
 #: .history/Me-somb-woo_20220315163011.php:192
 #: .history/Me-somb-woo_20220315163013.php:192
 #: .history/Me-somb-woo_20220315163123.php:192 Me-somb-woo.php:192
+#: Me-somb-woo.php:281
 msgid "Countries"
-msgstr "Countries"
+msgstr "Pays"
 
 #: .history/Me-somb-woo_20220312165026.php:166
 #: .history/Me-somb-woo_20220312165110.php:166
@@ -2945,8 +2972,9 @@ msgstr "Countries"
 #: .history/Me-somb-woo_20220315163011.php:102
 #: .history/Me-somb-woo_20220315163013.php:102
 #: .history/Me-somb-woo_20220315163123.php:102 Me-somb-woo.php:102
+#: Me-somb-woo.php:172
 msgid "Cameroon"
-msgstr "Cameroon"
+msgstr "Cameroun"
 
 #: .history/Me-somb-woo_20220312165026.php:167
 #: .history/Me-somb-woo_20220312165110.php:167
@@ -3055,6 +3083,7 @@ msgstr "Cameroon"
 #: .history/Me-somb-woo_20220315163011.php:103
 #: .history/Me-somb-woo_20220315163013.php:103
 #: .history/Me-somb-woo_20220315163123.php:103 Me-somb-woo.php:103
+#: Me-somb-woo.php:173
 msgid "Niger"
 msgstr "Niger"
 
@@ -3165,8 +3194,9 @@ msgstr "Niger"
 #: .history/Me-somb-woo_20220315163011.php:196
 #: .history/Me-somb-woo_20220315163013.php:196
 #: .history/Me-somb-woo_20220315163123.php:196 Me-somb-woo.php:196
-msgid "You can receive payments from which countries"
-msgstr "You can receive payments from which countries"
+#: Me-somb-woo.php:285
+msgid "You can receiver payment from which countries"
+msgstr "Vous pouvez recevoir le paiement de quels pays"
 
 #: .history/Me-somb-woo_20220312165708.php:273
 #: .history/Me-somb-woo_20220312165730.php:273
@@ -3270,8 +3300,9 @@ msgstr "You can receive payments from which countries"
 #: .history/Me-somb-woo_20220315163011.php:255
 #: .history/Me-somb-woo_20220315163013.php:255
 #: .history/Me-somb-woo_20220315163123.php:255 Me-somb-woo.php:255
+#: Me-somb-woo.php:342
 msgid "Country"
-msgstr "Country"
+msgstr "Pays"
 
 #: .history/Me-somb-woo_20220312175141.php:242
 #: .history/Me-somb-woo_20220312175210.php:242
@@ -3343,8 +3374,9 @@ msgstr "Country"
 #: .history/Me-somb-woo_20220315163011.php:267
 #: .history/Me-somb-woo_20220315163013.php:267
 #: .history/Me-somb-woo_20220315163123.php:267 Me-somb-woo.php:267
+#: Me-somb-woo.php:354
 msgid "Operator"
-msgstr "Operator"
+msgstr "Opérateur"
 
 #: .history/Me-somb-woo_20220315161438.php:333
 #: .history/Me-somb-woo_20220315161747.php:334
@@ -3355,16 +3387,40 @@ msgstr "Operator"
 #: .history/Me-somb-woo_20220315163011.php:338
 #: .history/Me-somb-woo_20220315163013.php:338
 #: .history/Me-somb-woo_20220315163123.php:338 Me-somb-woo.php:338
+#: Me-somb-woo.php:434
 msgid ""
 "Invalid operator it should be on of the following Mobile Money, Orange Money "
 "and Airtel Money"
 msgstr ""
-"Invalid operator it should be on of the following Mobile Money, Orange Money "
-"and Airtel Money"
+"Opérateur non valide, il doit s’agir de l’un des suivants Mobile Money, "
+"Orange Money et Airtel Money"
 
 #: .history/Me-somb-woo_20220315162435.php:343
 #: .history/Me-somb-woo_20220315163011.php:343
 #: .history/Me-somb-woo_20220315163013.php:343
 #: .history/Me-somb-woo_20220315163123.php:343 Me-somb-woo.php:343
+#: Me-somb-woo.php:439
 msgid "Your phone number format is invalid. It should be in the local format"
-msgstr "Your phone number format is invalid. It should be in the local format"
+msgstr ""
+"Le format de votre numéro de téléphone n’est pas valide. Il doit être au "
+"format local"
+
+#. Author of the plugin
+msgid "Hachther LLC <contact@hachther.com>"
+msgstr "Hachther LLC <contact@hachther.com>"
+
+#: Me-somb-woo.php:271
+msgid "MeSomb Access Key"
+msgstr "MeSomb Access Key"
+
+#: Me-somb-woo.php:273
+msgid "API Access key obtained from MeSomb"
+msgstr "API Access key obtained from MeSomb"
+
+#: Me-somb-woo.php:276
+msgid "MeSomb Secret Key"
+msgstr "MeSomb Secret Key"
+
+#: Me-somb-woo.php:278
+msgid "API Secret key obtained from MeSomb"
+msgstr "API Secret key obtained from MeSomb"
