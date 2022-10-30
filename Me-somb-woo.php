@@ -481,6 +481,7 @@ function mesomb_init_gateway_class()
                 'Accept-Language' => $locale,
                 'Content-Type'     => 'application/json',
                 'X-MeSomb-Application' => $this->application,
+                'X-MeSomb-TrxID' => $order_id,
             );
 
             if (!empty($this->accessKey)) {
