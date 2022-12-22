@@ -4,7 +4,7 @@
 Plugin Name: MeSomb for WooCommerce
 Plugin URI: https://mesomb.hachther.com
 Description: Plugin to integrate Mobile payment on WooCommerce using Hachther MeSomb
-Version: 1.2.0
+Version: 1.2.1
 Author: Hachther LLC <contact@hachther.com>
 Author URI: https://hachther.com
 Text Domain: mesomb-for-woocommerce
@@ -218,7 +218,7 @@ function mesomb_init_gateway_class()
 
             // You can also register a webhook here
             // add_action( 'woocommerce_api_{webhook name}', array( $this, 'webhook' ) );
-            $this->country = count($this->countries) > 0 ? $this->countries[0] : 'CM';
+            $this->country = is_array($this->countries) && count($this->countries) > 0 ? $this->countries[0] : 'CM';
             $this->countryCode = array(
                 'CM' => '237',
                 'NE' => '227'
@@ -337,7 +337,7 @@ function mesomb_init_gateway_class()
             do_action('woocommerce_credit_card_form_start', $this->id);
 
             // I recommend to use inique IDs, because other gateways could already use #ccNo, #expdate, #cvc
-            if (count($this->countries) > 1) {
+            if (is_array($this->countries) && count($this->countries) > 1) {
                 echo '<div class="form-row form-row-wide validate-required">
                     <label class="field-label">'.__('Country', 'mesomb-for-woocommerce').' <span class="required">*</span></label>
                     <div class="woocommerce-input-wrapper" id="countries-field">';
@@ -354,7 +354,7 @@ function mesomb_init_gateway_class()
                     <label class="field-label">'.__('Operator', 'mesomb-for-woocommerce').' <span class="required">*</span></label>
                     <div id="providers" style="display: flex; flex-direction: row; flex-wrap: wrap;">';
             $provs = array_filter($this->providers, function($k, $v) {
-                return count(array_intersect($k['countries'], $this->countries)) > 0;
+                return count(array_intersect($k['countries'], (array)$this->countries)) > 0;
             }, ARRAY_FILTER_USE_BOTH);
             foreach ($provs as $provider) {
                 echo '<div class="form-row provider-row '.implode(' ', $provider['countries']).'" style="width: 47%; margin-right: 2%">
@@ -369,7 +369,7 @@ function mesomb_init_gateway_class()
                             </span>
                                     <span class="kt-option__title">'.$provider['name'].'</span>
                                     <span class="kt-option__focus" style="position: relative; right: -10px; top: -10px;">
-                                        <img src="'.$provider['icon'].'" style="width: 25px; border-radius: 13px;"/>
+                                        <img alt="'.$provider['key'].'" src="'.$provider['icon'].'" style="width: 25px; border-radius: 13px;"/>
                                     </span>
                                 </span>
                                 <span class="kt-option__body">'.__('Pay with your', 'mesomb-for-woocommerce').' '.$provider['name'].'</span>
@@ -401,7 +401,7 @@ function mesomb_init_gateway_class()
                 wc_add_notice('<strong>Mobile/Orange Money Number</strong> is required', 'error');
                 return false;
             }
-            if (count($this->countries) > 1 && empty($_POST['country'])) {
+            if (is_array($this->countries) && count($this->countries) > 1 && empty($_POST['country'])) {
                 wc_add_notice('<strong>Your must select a the country</strong>', 'error');
                 return false;
             }
@@ -473,8 +473,8 @@ function mesomb_init_gateway_class()
             if (empty($this->accessKey)) {
                 $url = "https://mesomb.hachther.com/api/$version/payment/$endpoint";
             } else {
-//                $url = "http://127.0.0.1:8000/$lang/api/$version/payment/$endpoint";
                 $url = "https://mesomb.hachther.com/$lang/api/$version/payment/$endpoint";
+//                $url = "http://127.0.0.1:8000/$lang/api/$version/payment/$endpoint";
             }
 
             $headers = array(

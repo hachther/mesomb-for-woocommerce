@@ -3,7 +3,7 @@ Contributors: Hachther LLC
 Tags: ecommerce, payment, mobile money, orange money, woo commerce, Cameroon, Niger
 Tested up to: 6.0.3
 Requires PHP: 7.0
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
