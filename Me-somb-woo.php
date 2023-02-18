@@ -149,6 +149,34 @@ class Signature
     }
 }
 
+function get_provider($providers, $id) {
+    foreach ( $providers as $element ) {
+        if ( $id == $element['key'] ) {
+            return $element;
+        }
+    }
+    return null;
+}
+
+class PaymentMethod {
+    public $id;
+    public $title;
+
+    public function __construct($id, $title)
+    {
+        $this->id = $id;
+        $this->title = $title;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_title()
+    {
+        return $this->title;
+    }
+}
+
 add_action('plugins_loaded', 'mesomb_init_gateway_class');
 function mesomb_init_gateway_class()
 {
@@ -282,7 +310,7 @@ function mesomb_init_gateway_class()
                     'type' => 'multiselect',
                     'default' => 'CM',
                     'options' => $this->countriesList,
-                    'description' => __('You can receiver payment from which countries', 'mesomb-for-woocommerce'),
+                    'description' => __('You can receive payments from which countries', 'mesomb-for-woocommerce'),
                 ),
                 'conversion' => array(
                     'title' => __('Currency Conversion', 'mesomb-for-woocommerce'),
@@ -313,7 +341,7 @@ function mesomb_init_gateway_class()
             wp_enqueue_style( 'woocommerce_mesomb', plugins_url('style.css', __FILE__) );
 
             // and this is our custom JS in your plugin directory that works with token.js
-            wp_register_script('woocommerce_mesomb', plugins_url('mesomb.js', __FILE__) );
+            wp_register_script('woocommerce_mesomb', plugins_url('mesomb.js', __FILE__), ['wp-i18n'] );
 
             // in most payment processors you have to use PUBLIC KEY to obtain a token
             wp_localize_script('woocommerce_mesomb', 'mesomb_params', array(
@@ -363,7 +391,7 @@ function mesomb_init_gateway_class()
                                 <span class="kt-option__head">
                                 <span class="kt-option__control">
                                 <span class="kt-radio">
-                                    <input name="service" value="'.$provider['key'].'" type="radio" checked class="input-radio"/>
+                                    <input name="service" value="'.$provider['key'].'" type="radio" class="input-radio"/>
                                     <span></span>
                                 </span>
                             </span>
@@ -429,6 +457,8 @@ function mesomb_init_gateway_class()
             $service = $_POST['service'];
             $country = isset($_POST['country']) ? $_POST['country'] : $this->country;
             $payer = sanitize_text_field($_POST['payer']);
+            $payer = ltrim($payer, '00');
+            $payer = ltrim($payer, $this->countryCode[$country]);
 
             if (!in_array($service, ['ORANGE', 'MTN', 'AIRTEL'])) {
                 wc_add_notice(__('Invalid operator it should be on of the following Mobile Money, Orange Money and Airtel Money', 'mesomb-for-woocommerce'), 'error');
@@ -461,7 +491,8 @@ function mesomb_init_gateway_class()
                     'address_1' => $order->get_billing_address_1(),
                     'postcode' => $order->get_billing_postcode(),
                 ),
-                'products' => $products
+                'products' => $products,
+                'source' => 'WordPress '.get_bloginfo('version')
             );
             $lang = $locale == 'fr' ? 'fr' : 'en';
 
@@ -505,10 +536,12 @@ function mesomb_init_gateway_class()
 
                 // it could be different depending on your payment processor
                 if ($body['status'] == 'SUCCESS') {
+                    $provider_name = get_provider($this->providers, $body['transaction']['service'])['name'];
+                    $payer = $body['transaction']['b_party'];
+                    $order->set_payment_method(new PaymentMethod($body['transaction']['service'], "$provider_name ($payer)"));
                     // we received the payment
                     $order->payment_complete($body['transaction']['pk']);
                     wc_reduce_stock_levels($order_id);
-//                    $order->reduce_order_stock();
 
                     // some notes to customer (replace true with false to make it private)
                     $order->add_order_note(__('Hey, your order is paid! Thank you!', 'mesomb-for-woocommerce'), true);
