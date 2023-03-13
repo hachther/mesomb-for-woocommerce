@@ -26,6 +26,8 @@
     font-size: 1rem;
     font-weight: 400;
     color: #595d6e;
+    width: 100%;
+    margin-left: 5px;
 }
 
 .kt-option .kt-option__label .kt-option__head .kt-option__focus {
@@ -85,4 +87,17 @@
 
 .field-label {
     font-weight: 700 !important;
+}
+
+@media all and (max-width: 440px) {
+    .provider-row {
+        width: 100%;
+    }
+}
+
+@media all and (min-width: 441px) {
+    .provider-row {
+        width: 47%;
+        margin-right: 2%;
+    }
 }
