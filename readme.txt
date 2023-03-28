@@ -3,7 +3,7 @@ Contributors: Hachther LLC
 Tags: ecommerce, payment, mobile money, orange money, woo commerce, Cameroon, Niger
 Tested up to: 6.1.1
 Requires PHP: 7.0
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -48,6 +48,18 @@ No, Installation is free.
 2. Your service in MeSomb
 
 == Changelog ==
+= 1.2.4 =
+- Fix translations issue
+
+== Changelog ==
+= 1.2.3 =
+- Make operations radio responsive on the payment form
+
+== Changelog ==
+= 1.2.2 =
+- Add payment information payment in order
+- Change payment input field placeholder on payment method changed
+
 = 1.2.0 =
 - Migrate to version v1.1 of the MeSomb which implements new MeSomb security standards.
 - Integration of refund feature

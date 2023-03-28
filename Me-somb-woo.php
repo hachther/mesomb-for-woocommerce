@@ -4,7 +4,7 @@
 Plugin Name: MeSomb for WooCommerce
 Plugin URI: https://mesomb.hachther.com
 Description: Plugin to integrate Mobile payment on WooCommerce using Hachther MeSomb
-Version: 1.2.3
+Version: 1.2.4
 Author: Hachther LLC <contact@hachther.com>
 Author URI: https://hachther.com
 Text Domain: mesomb-for-woocommerce
