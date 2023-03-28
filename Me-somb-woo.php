@@ -180,6 +180,9 @@ class PaymentMethod {
 add_action('plugins_loaded', 'mesomb_init_gateway_class');
 function mesomb_init_gateway_class()
 {
+    $plugin_rel_path = basename( dirname( __FILE__ ) ) . '/languages';
+    load_plugin_textdomain( 'mesomb-for-woocommerce', false, $plugin_rel_path );
+
     class WC_MeSomb_Gateway extends WC_Payment_Gateway
     {
 
