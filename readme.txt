@@ -16,7 +16,7 @@ MeSomb WooCommerce is a fast and easy way to integrate mobile payment (Mobile Mo
 This will help your add the mobile payment on your shop by relying on MeSomb services which is currently available in Cameroon and Niger.
 
 == Installation ==
-1. First you must register your service on MeSomb and create API access Key: [follow this tutorial](https://mesomb.hachther.com/en/blog/tutorials/how-to-register-your-service-on-mesomb/)
+1. First you must register your service on MeSomb and create API access Key: [follow this tutorial](https://mesomb.com/how-to-register-your-service-on-mesomb/)
 2. Once your service is registered, you must get those three pieces of information: Application Key, Access Key and Secret Key
 3. Activate your MeSomb Payment Method in your WordPress settings. On the left menu in the admin panel go to WooCommerce -> Settings -> Payments and click On *MeSomb Gateway*
 4. Set up the gateway by filling out the form. You must set the following parameters:
