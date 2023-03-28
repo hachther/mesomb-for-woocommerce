@@ -399,9 +399,7 @@ function mesomb_init_gateway_class()
                                 </span>
                             </span>
                                     <span class="kt-option__title">'.$provider['name'].'</span>
-                                    <span class="kt-option__focus" style="position: relative; right: -10px; top: -10px;">
-                                        <img alt="'.$provider['key'].'" src="'.$provider['icon'].'" style="width: 25px; border-radius: 13px;"/>
-                                    </span>
+                                    <img alt="'.$provider['key'].'" src="'.$provider['icon'].'" style="width: 25px; height: 25px; border-radius: 13px; position: relative; top: -0.75em; right: -0.75em;"/>
                                 </span>
                                 <span class="kt-option__body">'.__('Pay with your', 'mesomb-for-woocommerce').' '.$provider['name'].'</span>
                             </span>
