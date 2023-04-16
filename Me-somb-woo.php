@@ -4,7 +4,7 @@
 Plugin Name: MeSomb for WooCommerce
 Plugin URI: https://mesomb.hachther.com
 Description: Plugin to integrate Mobile payment on WooCommerce using Hachther MeSomb
-Version: 1.2.4
+Version: 1.2.4-1
 Author: Hachther LLC <contact@hachther.com>
 Author URI: https://hachther.com
 Text Domain: mesomb-for-woocommerce
@@ -388,7 +388,7 @@ function mesomb_init_gateway_class()
                 return count(array_intersect($k['countries'], (array)$this->countries)) > 0;
             }, ARRAY_FILTER_USE_BOTH);
             foreach ($provs as $provider) {
-                echo '<div class="form-row provider-row '.implode(' ', $provider['countries']).'">
+                echo '<div class="form-row provider-row '.implode(' ', $provider['countries']).'" style="margin-right: 5px;">
                         <label class="kt-option">
                             <span class="kt-option__label">
                                 <span class="kt-option__head">
@@ -399,7 +399,7 @@ function mesomb_init_gateway_class()
                                 </span>
                             </span>
                                     <span class="kt-option__title">'.$provider['name'].'</span>
-                                    <img alt="'.$provider['key'].'" src="'.$provider['icon'].'" style="width: 25px; height: 25px; border-radius: 13px; position: relative; top: -0.75em; right: -0.75em;"/>
+                                    <img width="25" height="25" alt="'.$provider['key'].'" src="'.$provider['icon'].'" style="width: 25px; height: 25px; border-radius: 13px; position: relative; top: -0.75em; right: -0.75em;"/>
                                 </span>
                                 <span class="kt-option__body">'.__('Pay with your', 'mesomb-for-woocommerce').' '.$provider['name'].'</span>
                             </span>

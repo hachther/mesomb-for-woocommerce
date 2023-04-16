@@ -106,3 +106,18 @@
 fieldset.wc-mesomb-form {
     border-radius: 10px;
 }
+
+.wc-mesomb-form .form-row {
+    padding: 0 !important;
+}
+
+.wc-mesomb-form .form-row .input-text {
+    background-color: #f5f7f9 !important;
+    border: none !important;
+}
+
+.kt-option .kt-option__control .kt-radio input[type="radio"] {
+    position: relative !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
