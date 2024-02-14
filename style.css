@@ -112,8 +112,9 @@ fieldset.wc-mesomb-form {
 }
 
 .wc-mesomb-form .form-row .input-text {
-    background-color: #f5f7f9 !important;
-    border: none !important;
+    /*background-color: #f5f7f9 !important;*/
+    border: 1px solid #ebedf2 !important;
+    border-radius: 2px;
 }
 
 .kt-option .kt-option__control .kt-radio input[type="radio"] {

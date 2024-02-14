@@ -177,6 +177,20 @@ class PaymentMethod {
     }
 }
 
+function get_client_ip() {
+	if(!empty($_SERVER['HTTP_CLIENT_IP'])) {
+		return $_SERVER['HTTP_CLIENT_IP'];
+	}
+	//if user is from the proxy
+	elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+		return $_SERVER['HTTP_X_FORWARDED_FOR'];
+	}
+	//if user is from the remote address
+	else{
+		return $_SERVER['REMOTE_ADDR'];
+	}
+}
+
 add_action('plugins_loaded', 'mesomb_init_gateway_class');
 function mesomb_init_gateway_class()
 {
@@ -493,7 +507,10 @@ function mesomb_init_gateway_class()
                     'postcode' => $order->get_billing_postcode(),
                 ),
                 'products' => $products,
-                'source' => 'WordPress '.get_bloginfo('version')
+				'location' => [
+					'ip' => get_client_ip()
+				],
+                'source' => 'WordPress/v'.get_bloginfo('version'),
             );
             $lang = $locale == 'fr' ? 'fr' : 'en';
 

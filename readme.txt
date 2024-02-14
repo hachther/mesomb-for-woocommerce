@@ -1,9 +1,9 @@
 === MeSomb for WooCommerce ===
 Contributors: Hachther LLC
 Tags: ecommerce, payment, mobile money, orange money, woo commerce, Cameroon, Niger
-Tested up to: 6.1.1
+Tested up to: 6.3.1
 Requires PHP: 7.0
-Stable tag: 1.2.4-1
+Stable tag: 1.2.5-1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -14,6 +14,8 @@ MeSomb WooCommerce is an easy to integrate mobile payment (Mobile Money or Orang
 MeSomb WooCommerce is a fast and easy way to integrate mobile payment (Mobile Money Orange Money, Airtel Money) in your Woo Commerce shop.
 
 This will help your add the mobile payment on your shop by relying on MeSomb services which is currently available in Cameroon and Niger.
+
+https://www.youtube.com/watch?v=J9ECfNIbPDU
 
 == Installation ==
 1. First you must register your service on MeSomb and create API access Key: [follow this tutorial](https://mesomb.com/how-to-register-your-service-on-mesomb/)
@@ -48,6 +50,10 @@ No, Installation is free.
 2. Your service in MeSomb
 
 == Changelog ==
+= 1.2.5 =
+- Fix stylesheet issue
+
+== Changelog ==
 = 1.2.4 =
 - Fix translations issue
 
@@ -68,7 +74,7 @@ No, Installation is free.
 Integration of Niger and Airtel Money
 
 = 1.0.0 =
-Accept payment for Orange Money and mobile money Cameroun
+Accept payment for Orange Money and mobile money Cameroon
 
 == Upgrade Notice ==
 = 1.2.0 =
