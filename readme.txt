@@ -1,6 +1,6 @@
 === MeSomb for WooCommerce ===
-Contributors: Hachther LLC
-Tags: ecommerce, payment, mobile money, orange money, woo commerce, Cameroon, Niger
+Contributors: hachther
+Tags: ecommerce, payment, mobile money, orange money, woo commerce
 Tested up to: 6.7.1
 Requires PHP: 7.0
 Stable tag: 1.2.6
