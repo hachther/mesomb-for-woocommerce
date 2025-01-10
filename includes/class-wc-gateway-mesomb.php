@@ -179,6 +179,9 @@ class WC_Gateway_MeSomb extends WC_Payment_Gateway {
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_scheduled_subscription_payment_mesomb', array( $this, 'process_subscription_payment' ), 10, 2 );
 		add_action ( 'wc_pre_orders_process_pre_order_completion_payment_' . $this->id, array( $this, 'process_pre_order_release_payment' ), 10 );
+
+		// Load script for classic checkout
+		add_action('wp_enqueue_scripts', array($this, 'payment_scripts'));
 	}
 
 	/**
@@ -395,6 +398,97 @@ class WC_Gateway_MeSomb extends WC_Payment_Gateway {
 	}
 
 	/**
+	 * Output for the order received page.
+	 */
+	public function payment_fields()
+	{
+		// ok, let's display some description before the payment form
+		if ($this->description) {
+			echo wpautop(wp_kses_post($this->description));
+		}
+
+		// I will echo() the form, but you can close PHP tags and print it directly in HTML
+		echo '<fieldset id="wc-' . esc_attr($this->id) . '-cc-form" class="wc-mesomb-form wc-payment-form" style="background:transparent;">';
+
+		// Add this action hook if you want your custom payment gateway to support it
+		do_action('woocommerce_credit_card_form_start', $this->id);
+
+		// I recommend to use inique IDs, because other gateways could already use #ccNo, #expdate, #cvc
+		if (is_array($this->selectedCountries) && count($this->selectedCountries) > 1) {
+			echo '<div class="form-row form-row-wide validate-required">
+                    <label class="field-label">'.__('Country', 'mesomb-for-woocommerce').' <span class="required">*</span></label>
+                    <div class="woocommerce-input-wrapper" id="countries-field">';
+			foreach ($this->selectedCountries as $country) {
+				echo '<label>
+                        <input required id="mesomb-country-'.$country.'" type="radio" autocomplete="off" name="country" class="input-radio" value="'.$country.'" /> '.$this->availableCountries[$country].'
+                    </label>';
+			}
+			echo '</div>
+                </div>';
+		}
+
+		echo '<div class="form-row form-row-wide validate-required">
+                    <label class="field-label">'.__('Operator', 'mesomb-for-woocommerce').' <span class="required">*</span></label>
+                    <div id="providers" style="display: flex; flex-direction: row; flex-wrap: wrap;">';
+		$provs = array_filter($this->providers, function($k, $v) {
+			return count(array_intersect($k['countries'], (array)$this->selectedCountries)) > 0;
+		}, ARRAY_FILTER_USE_BOTH);
+		foreach ($provs as $provider) {
+			echo '<div class="form-row provider-row '.implode(' ', $provider['countries']).'" style="margin-right: 5px;">
+                        <label class="kt-option">
+                            <span class="kt-option__label">
+                                <span class="kt-option__head">
+                                <span class="kt-option__control">
+                                <span class="kt-radio">
+                                    <input name="service" value="'.$provider['key'].'" type="radio" class="input-radio"/>
+                                    <span></span>
+                                </span>
+                            </span>
+                                    <span class="kt-option__title">'.$provider['name'].'</span>
+                                    <img width="25" height="25" alt="'.$provider['key'].'" src="'.$provider['icon'].'" style="width: 25px; height: 25px; border-radius: 13px; position: relative; top: -0.75em; right: -0.75em;"/>
+                                </span>
+                                <span class="kt-option__body">'.__('Pay with your', 'mesomb-for-woocommerce').' '.$provider['name'].'</span>
+                            </span>
+                        </label>
+                    </div>';
+		}
+		echo '</div></div>';
+		echo '<div class="form-row form-row-wide validate-required">
+                    <label class="field-label">'.__('Phone Number', 'mesomb-for-woocommerce').' <span class="required">*</span></label>
+                    <div class="woocommerce-input-wrapper">
+                        <input id="mesomb-payer" required type="tel" autocomplete="off" name="payer" placeholder="Expl: 670000000" class="input-text" />
+                    </div>
+                </div>';
+
+		echo '<div class="alert alert-success" role="alert" id="mesomb-alert" style="display: none">
+                  <h4 class="alert-heading">'.__('Check your phone', 'mesomb-for-woocommerce').'!</h4>
+                  <p>'.__('Please check your phone to validate payment from Hachther SARL or MeSomb', 'mesomb-for-woocommerce').'</p>
+                </div>';
+
+		do_action('woocommerce_credit_card_form_end', $this->id);
+
+		echo '<div class="clear"></div></fieldset>';
+	}
+
+	/**
+	 * Validate the payment form.
+	 *
+	 * @return bool
+	 */
+	public function validate_fields()
+	{
+		if (empty($_POST['payer'])) {
+			wc_add_notice('<strong>Mobile/Orange Money Number</strong> is required', 'error');
+			return false;
+		}
+		if (is_array($this->selectedCountries) && count($this->selectedCountries) > 1 && empty($_POST['country'])) {
+			wc_add_notice('<strong>Your must select a the country</strong>', 'error');
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Process subscription payment.
 	 *
 	 * @param  float     $amount
@@ -427,5 +521,35 @@ class WC_Gateway_MeSomb extends WC_Payment_Gateway {
 			$message = __( 'Order payment failed. To make a successful payment using MeSomb Payments, please review the gateway settings.', 'mesomb-for-woocommerce' );
 			$order->update_status( 'failed', $message );
 		}
+	}
+
+	public function payment_scripts()
+	{
+		// we need JavaScript to process a token only on cart/checkout pages, right?
+		if (!is_cart() && !is_checkout() && !isset($_GET['pay_for_order'])) {
+			return;
+		}
+
+		// if our payment gateway is disabled, we do not have to enqueue JS too
+		if ('no' === $this->enabled) {
+			return;
+		}
+
+		// no reason to enqueue JavaScript if API keys are not set
+		if (empty($this->application)) {
+			return;
+		}
+
+		wp_enqueue_style( 'woocommerce_mesomb', plugins_url('styles/style.css', __FILE__) );
+
+		// and this is our custom JS in your plugin directory that works with token.js
+		wp_register_script('woocommerce_mesomb', plugins_url('js/mesomb.js', __FILE__));
+
+		// in most payment processors you have to use PUBLIC KEY to obtain a token
+		wp_localize_script('woocommerce_mesomb', 'mesomb_params', array(
+			'apiKey' => $this->application
+		));
+
+		wp_enqueue_script('woocommerce_mesomb');
 	}
 }
