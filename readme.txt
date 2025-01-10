@@ -3,7 +3,7 @@ Contributors: hachther
 Tags: ecommerce, payment, mobile money, orange money, woo commerce
 Tested up to: 6.7.1
 Requires PHP: 7.0
-Stable tag: 1.2.6
+Stable tag: 1.2.7
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,10 @@ No, Installation is free.
 2. Your service in MeSomb
 
 == Changelog ==
+
+= 1.2.7 =
+- Add compatibility to the checkout classic
+- Display payment icon
 
 = 1.2.6 =
 - Update to support woocommerce blocks
