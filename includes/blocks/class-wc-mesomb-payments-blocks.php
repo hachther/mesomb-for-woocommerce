@@ -102,6 +102,7 @@ final class WC_Gateway_MeSomb_Blocks_Support extends AbstractPaymentMethodType {
 				)
 			),
 			'countries' => $this->get_setting( 'countries' ),
+			'icon'		=> plugins_url( 'images/logo-long.png', __FILE__ ),
 		];
 	}
 }

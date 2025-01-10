@@ -388,12 +388,12 @@ class WC_Gateway_MeSomb extends WC_Payment_Gateway {
 			} else {
 				$message = esc_html($body['detail'] ?? $body['message']);
 				$order->update_status( 'failed', $message );
-				throw new Exception( $message );
+				throw new Exception( esc_html($message) );
 			}
 		} else {
 			$message = esc_html__("Error during the payment process!\nPlease try again and contact the admin if the issue continues", 'mesomb-for-woocommerce');
 			$order->update_status( 'failed', $message );
-			throw new Exception( $message );
+			throw new Exception( esc_html($message) );
 		}
 	}
 
@@ -404,7 +404,7 @@ class WC_Gateway_MeSomb extends WC_Payment_Gateway {
 	{
 		// ok, let's display some description before the payment form
 		if ($this->description) {
-			echo wpautop(wp_kses_post($this->description));
+			echo esc_html(wpautop(wp_kses_post($this->description)));
 		}
 
 		// I will echo() the form, but you can close PHP tags and print it directly in HTML
@@ -416,11 +416,11 @@ class WC_Gateway_MeSomb extends WC_Payment_Gateway {
 		// I recommend to use inique IDs, because other gateways could already use #ccNo, #expdate, #cvc
 		if (is_array($this->selectedCountries) && count($this->selectedCountries) > 1) {
 			echo '<div class="form-row form-row-wide validate-required">
-                    <label class="field-label">'.__('Country', 'mesomb-for-woocommerce').' <span class="required">*</span></label>
+                    <label class="field-label">'.esc_html__('Country', 'mesomb-for-woocommerce').' <span class="required">*</span></label>
                     <div class="woocommerce-input-wrapper" id="countries-field">';
 			foreach ($this->selectedCountries as $country) {
 				echo '<label>
-                        <input required id="mesomb-country-'.$country.'" type="radio" autocomplete="off" name="country" class="input-radio" value="'.$country.'" /> '.$this->availableCountries[$country].'
+                        <input required id="mesomb-country-'.esc_html($country).'" type="radio" autocomplete="off" name="country" class="input-radio" value="'.esc_html($country).'" /> '.esc_html($this->availableCountries[$country]).'
                     </label>';
 			}
 			echo '</div>
@@ -428,41 +428,41 @@ class WC_Gateway_MeSomb extends WC_Payment_Gateway {
 		}
 
 		echo '<div class="form-row form-row-wide validate-required">
-                    <label class="field-label">'.__('Operator', 'mesomb-for-woocommerce').' <span class="required">*</span></label>
+                    <label class="field-label">'.esc_html__('Operator', 'mesomb-for-woocommerce').' <span class="required">*</span></label>
                     <div id="providers" style="display: flex; flex-direction: row; flex-wrap: wrap;">';
 		$provs = array_filter($this->providers, function($k, $v) {
 			return count(array_intersect($k['countries'], (array)$this->selectedCountries)) > 0;
 		}, ARRAY_FILTER_USE_BOTH);
 		foreach ($provs as $provider) {
-			echo '<div class="form-row provider-row '.implode(' ', $provider['countries']).'" style="margin-right: 5px;">
+			echo '<div class="form-row provider-row '.esc_html(implode(' ', $provider['countries'])).'" style="margin-right: 5px;">
                         <label class="kt-option">
                             <span class="kt-option__label">
                                 <span class="kt-option__head">
                                 <span class="kt-option__control">
                                 <span class="kt-radio">
-                                    <input name="service" value="'.$provider['key'].'" type="radio" class="input-radio"/>
+                                    <input name="service" value="'.esc_html($provider['key']).'" type="radio" class="input-radio"/>
                                     <span></span>
                                 </span>
                             </span>
-                                    <span class="kt-option__title">'.$provider['name'].'</span>
-                                    <img width="25" height="25" alt="'.$provider['key'].'" src="'.$provider['icon'].'" style="width: 25px; height: 25px; border-radius: 13px; position: relative; top: -0.75em; right: -0.75em;"/>
+                                    <span class="kt-option__title">'.esc_html($provider['name']).'</span>
+                                    <img width="25" height="25" alt="'.esc_html($provider['key']).'" src="'.esc_html($provider['icon']).'" style="width: 25px; height: 25px; border-radius: 13px; position: relative; top: -0.75em; right: -0.75em;"/>
                                 </span>
-                                <span class="kt-option__body">'.__('Pay with your', 'mesomb-for-woocommerce').' '.$provider['name'].'</span>
+                                <span class="kt-option__body">'.esc_html__('Pay with your', 'mesomb-for-woocommerce').' '.esc_html($provider['name']).'</span>
                             </span>
                         </label>
                     </div>';
 		}
 		echo '</div></div>';
 		echo '<div class="form-row form-row-wide validate-required">
-                    <label class="field-label">'.__('Phone Number', 'mesomb-for-woocommerce').' <span class="required">*</span></label>
+                    <label class="field-label">'.esc_html__('Phone Number', 'mesomb-for-woocommerce').' <span class="required">*</span></label>
                     <div class="woocommerce-input-wrapper">
                         <input id="mesomb-payer" required type="tel" autocomplete="off" name="payer" placeholder="Expl: 670000000" class="input-text" />
                     </div>
                 </div>';
 
 		echo '<div class="alert alert-success" role="alert" id="mesomb-alert" style="display: none">
-                  <h4 class="alert-heading">'.__('Check your phone', 'mesomb-for-woocommerce').'!</h4>
-                  <p>'.__('Please check your phone to validate payment from Hachther SARL or MeSomb', 'mesomb-for-woocommerce').'</p>
+                  <h4 class="alert-heading">'.esc_html__('Check your phone', 'mesomb-for-woocommerce').'!</h4>
+                  <p>'.esc_html__('Please check your phone to validate payment from Hachther SARL or MeSomb', 'mesomb-for-woocommerce').'</p>
                 </div>';
 
 		do_action('woocommerce_credit_card_form_end', $this->id);
@@ -482,7 +482,7 @@ class WC_Gateway_MeSomb extends WC_Payment_Gateway {
 			return false;
 		}
 		if (is_array($this->selectedCountries) && count($this->selectedCountries) > 1 && empty($_POST['country'])) {
-			wc_add_notice('<strong>Your must select a the country</strong>', 'error');
+			wc_add_notice('<strong>'.esc_html__('Your must select a the country', 'mesomb-for-woocommerce').'</strong>', 'error');
 			return false;
 		}
 		return true;
@@ -540,10 +540,10 @@ class WC_Gateway_MeSomb extends WC_Payment_Gateway {
 			return;
 		}
 
-		wp_enqueue_style( 'woocommerce_mesomb', plugins_url('styles/style.css', __FILE__) );
+		wp_enqueue_style( 'woocommerce_mesomb', plugins_url('styles/style.css', __FILE__), [], '1.0.0' );
 
 		// and this is our custom JS in your plugin directory that works with token.js
-		wp_register_script('woocommerce_mesomb', plugins_url('js/mesomb.js', __FILE__));
+		wp_register_script('woocommerce_mesomb', plugins_url('js/mesomb.js', __FILE__), [], '1.0.0');
 
 		// in most payment processors you have to use PUBLIC KEY to obtain a token
 		wp_localize_script('woocommerce_mesomb', 'mesomb_params', array(

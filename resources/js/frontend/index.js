@@ -37,6 +37,7 @@ const Content = (props) => {
 	const [alert, setAlert] = useState(false);
 	const { eventRegistration, emitResponse } = props;
 	const { onPaymentProcessing } = eventRegistration;
+	console.log(settings);
 
 	useEffect(() => {
 		const unsubscribe = onPaymentProcessing( async () => {
@@ -345,7 +346,7 @@ const Content = (props) => {
  */
 const Label = (props) => {
 	const {PaymentMethodLabel} = props.components;
-	return <PaymentMethodLabel text={label}/>;
+	return <div><PaymentMethodLabel text={label}/><img style={{marginLeft: 5}} src={settings.icon} alt={'MeSomb'}/></div>;
 };
 
 /**

@@ -1,4 +1,4 @@
-# Copyright (C) 2024 Hachther LLC <contact@hachther.com>
+# Copyright (C) 2025 Hachther LLC <contact@hachther.com>
 # This file is distributed under the GNU General Public License v3.0.
 msgid ""
 msgstr ""
@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-12-07T04:46:44+00:00\n"
+"POT-Creation-Date: 2025-01-10T14:08:55+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "language-team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -49,167 +49,183 @@ msgstr ""
 msgid "Niger"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:191
+#: includes/class-wc-gateway-mesomb.php:194
 msgid "Enable/Disable"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:192
+#: includes/class-wc-gateway-mesomb.php:195
 msgid "Enable MeSomb Gateway"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:198
+#: includes/class-wc-gateway-mesomb.php:201
 msgid "Title"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:200
+#: includes/class-wc-gateway-mesomb.php:203
 msgid "This controls the title which the user sees during checkout."
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:201
+#: includes/class-wc-gateway-mesomb.php:204
 msgid "MeSomb Mobile Payment"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:205
+#: includes/class-wc-gateway-mesomb.php:208
 msgid "Description"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:207
+#: includes/class-wc-gateway-mesomb.php:210
 msgid "This controls the description which the user sees during checkout."
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:208
+#: includes/class-wc-gateway-mesomb.php:211
 msgid "Pay with your Mobile/Orange Money account."
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:211
+#: includes/class-wc-gateway-mesomb.php:214
 msgid "Fees Included"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:212
+#: includes/class-wc-gateway-mesomb.php:215
 msgid "Fees are already included in the displayed price"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:214
+#: includes/class-wc-gateway-mesomb.php:217
 msgid "This control if the MeSomb fees is already included in the price shown to users"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:219
+#: includes/class-wc-gateway-mesomb.php:222
 msgid "MeSomb Application Key"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:223
+#: includes/class-wc-gateway-mesomb.php:226
 msgid "MeSomb Access Key"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:225
+#: includes/class-wc-gateway-mesomb.php:228
 msgid "API Access key obtained from MeSomb"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:228
+#: includes/class-wc-gateway-mesomb.php:231
 msgid "MeSomb Secret Key"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:230
+#: includes/class-wc-gateway-mesomb.php:233
 msgid "API Secret key obtained from MeSomb"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:233
+#: includes/class-wc-gateway-mesomb.php:236
 msgid "Countries"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:237
+#: includes/class-wc-gateway-mesomb.php:240
 msgid "You can receive payments from which countries"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:240
+#: includes/class-wc-gateway-mesomb.php:243
 msgid "Currency Conversion"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:241
+#: includes/class-wc-gateway-mesomb.php:244
 msgid "Rely on MeSomb to automatically convert foreign currencies"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:293
+#: includes/class-wc-gateway-mesomb.php:296
 msgid "Invalid operator it should be on of the following Mobile Money, Orange Money and Airtel Money"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:298
+#: includes/class-wc-gateway-mesomb.php:301
 msgid "Your phone number format is invalid. It should be in the local format"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:374
+#: includes/class-wc-gateway-mesomb.php:378
 msgid "Hey, your order is paid! Thank you!"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:390
+#: includes/class-wc-gateway-mesomb.php:394
 msgid ""
 "Error during the payment process!\n"
 "Please try again and contact the admin if the issue continues"
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:409
+#: includes/class-wc-gateway-mesomb.php:419
+#: assets/frontend/blocks.js:97
+msgid "Country"
+msgstr ""
+
+#: includes/class-wc-gateway-mesomb.php:431
+msgid "Operator"
+msgstr ""
+
+#: includes/class-wc-gateway-mesomb.php:450
+#: assets/frontend/blocks.js:280
+msgid "Pay with your"
+msgstr ""
+
+#: includes/class-wc-gateway-mesomb.php:457
+#: assets/frontend/blocks.js:143
+#: assets/frontend/blocks.js:151
+msgid "Phone Number"
+msgstr ""
+
+#: includes/class-wc-gateway-mesomb.php:464
+#: assets/frontend/blocks.js:170
+#: assets/frontend/blocks.js:325
+msgid "Check your phone"
+msgstr ""
+
+#: includes/class-wc-gateway-mesomb.php:465
+#: assets/frontend/blocks.js:171
+#: assets/frontend/blocks.js:327
+msgid "Please check your phone to validate payment from Hachther SARL or MeSomb"
+msgstr ""
+
+#: includes/class-wc-gateway-mesomb.php:485
+msgid "Your must select a the country"
+msgstr ""
+
+#: includes/class-wc-gateway-mesomb.php:504
 msgid "Subscription payment failed. To make a successful payment using MeSomb Payments, please review the gateway settings."
 msgstr ""
 
-#: includes/class-wc-gateway-mesomb.php:426
+#: includes/class-wc-gateway-mesomb.php:521
 msgid "Order payment failed. To make a successful payment using MeSomb Payments, please review the gateway settings."
 msgstr ""
 
+#: includes/js/mesomb.js:36
 #: assets/frontend/blocks.js:19
 msgid "Mobile Money Number"
 msgstr ""
 
+#: includes/js/mesomb.js:37
 #: assets/frontend/blocks.js:20
 msgid "Orange Money Number"
 msgstr ""
 
+#: includes/js/mesomb.js:38
 #: assets/frontend/blocks.js:21
 msgid "Airtel Money Number"
 msgstr ""
 
-#: assets/frontend/blocks.js:46
+#: assets/frontend/blocks.js:47
 msgid "You must select the country of the payment"
 msgstr ""
 
-#: assets/frontend/blocks.js:49
+#: assets/frontend/blocks.js:50
 msgid "You must select your payment provider"
 msgstr ""
 
-#: assets/frontend/blocks.js:52
+#: assets/frontend/blocks.js:53
 msgid "You must enter the payment number"
 msgstr ""
 
-#: assets/frontend/blocks.js:96
-msgid "Country"
-msgstr ""
-
-#: assets/frontend/blocks.js:105
+#: assets/frontend/blocks.js:106
 msgid "Select Country"
 msgstr ""
 
-#: assets/frontend/blocks.js:120
+#: assets/frontend/blocks.js:121
 msgid "Service Provider"
 msgstr ""
 
-#: assets/frontend/blocks.js:129
+#: assets/frontend/blocks.js:130
 msgid "Select Mobile Operator"
-msgstr ""
-
-#: assets/frontend/blocks.js:142
-#: assets/frontend/blocks.js:150
-msgid "Phone Number"
-msgstr ""
-
-#: assets/frontend/blocks.js:169
-#: assets/frontend/blocks.js:324
-msgid "Check your phone"
-msgstr ""
-
-#: assets/frontend/blocks.js:170
-#: assets/frontend/blocks.js:326
-msgid "Please check your phone to validate payment from Hachther SARL or MeSomb"
-msgstr ""
-
-#: assets/frontend/blocks.js:279
-msgid "Pay with your"
 msgstr ""
