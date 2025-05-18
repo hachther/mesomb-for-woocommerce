@@ -12,7 +12,7 @@
  * Domain Path: /languages/
  *
  * Requires at least: 4.2
- * Tested up to: 6.7.1
+ * Tested up to: 6.8.1
  *
  * Copyright: © 2009-2024 Hachther LLC.
  * License: GNU General Public License v3.0

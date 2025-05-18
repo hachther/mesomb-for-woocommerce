@@ -309,7 +309,7 @@ class WC_Gateway_MeSomb extends WC_Payment_Gateway {
 			'fees' => $this->feesIncluded == 'yes',
 			'conversion' => $this->conversion == 'yes',
 			'currency' => $order->get_currency(),
-			'message' => $order->get_customer_note() . ' Me-somb-woo.php' . get_bloginfo('name'),
+			'message' => $order->get_customer_note() . get_bloginfo('name'),
 			'reference' => $order->get_id(),
 			'country' => $country,
 			'customer' => array(
@@ -337,6 +337,7 @@ class WC_Gateway_MeSomb extends WC_Payment_Gateway {
 		$version = empty($this->accessKey) ? 'v1.0' : 'v1.1';
 		$endpoint = empty($this->accessKey) ? 'online/' : 'collect/';
 		$url = "https://mesomb.hachther.com/api/$version/payment/$endpoint";
+//		$url = "http://host.docker.internal:8000/api/$version/payment/$endpoint";
 
 		$headers = array(
 			'Accept-Language' => $locale,

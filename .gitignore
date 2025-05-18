@@ -42,3 +42,5 @@ Thumbs.db
 # Build assets.
 select2.scss
 phpcs.xml
+bin
+webpack.config.js

@@ -1,7 +1,7 @@
 === MeSomb for WooCommerce ===
 Contributors: hachther
 Tags: ecommerce, payment, mobile money, orange money, woo commerce
-Tested up to: 6.7.1
+Tested up to: 6.8.1
 Requires PHP: 7.0
 Stable tag: 1.2.7
 License: GPLv3
